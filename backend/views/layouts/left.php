@@ -8,7 +8,7 @@
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                <p><?php echo Yii::$app->user->identity->username?></p>
 
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -30,23 +30,26 @@
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => 'Menu 菜单', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
-                        'label' => 'Same tools',
+                        'label' => '账号管理',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
                             [
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
-                                'url' => '#',
+                                'label' => '管理员',
+                                'icon' => 'share',
+                                // 'url' => ['/admin-user/index'],
                                 'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
+                                    ['label' => '账号列表', 'icon' => 'circle-o', 'url' => ['/admin-user/index'],],
+                                    ['label' => '添加账号', 'icon' => 'circle-o', 'url' => ['/admin-user/create'],],
+                                    ['label' => '修改账号', 'icon' => 'circle-o', 'url' => ['/admin-user/update'],],
+                                    ['label' => '删除账号', 'icon' => 'circle-o', 'url' => ['/admin-user/delete'],],
                                     [
                                         'label' => 'Level Two',
                                         'icon' => 'circle-o',
@@ -60,6 +63,20 @@
                             ],
                         ],
                     ],
+                        [
+                            'label' => '权限管理',
+                            'icon' => 'share',
+                            'url' => '#',
+                            'items' => [
+                                ['label' => '路由列表', 'icon' => 'circle-o','url'=>['/admin/route']],
+                                ['label' => '权限列表', 'icon' => 'circle-o','url'=>['/admin/permission']],
+                                ['label' => '角色列表', 'icon' => 'circle-o','url'=>['/admin/role']],
+                                ['label' => '规则列表', 'icon' => 'circle-o','url'=>['/admin/rule']],
+                                ['label' => '分配', 'icon' => 'circle-o','url'=>['/admin/assignment']],
+                                ['label' => '菜单列表', 'icon' => 'circle-o','url'=>['/admin/menu']],
+
+                            ],
+                        ],
                 ],
             ]
         ) ?>

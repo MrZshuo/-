@@ -11,7 +11,14 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+        ],
+    ],
+    'aliases' => [
+        '@mdm/admin' => '@vendor/mdmsoft/yii-admin',
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -23,6 +30,13 @@ return [
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'],
+        ],
+        'as access' => [
+            'class' => 'mdm\admin\components\AccessControl',
+            'allowAction' =>[
+
+            ]
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
