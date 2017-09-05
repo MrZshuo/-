@@ -11,6 +11,8 @@ class BannerForm extends Model
 	
 	public $file;
 	public $files;
+	public $url;
+	public $sort;
 
 	public function fules()
 	{
@@ -18,6 +20,15 @@ class BannerForm extends Model
 		    // [['file','files'], 'required'],
 	        [['file', 'files'], 'safe'],
 	        [['file'], 'string', 'max' => 255],
+	        [['sort'], 'number'],
 	    ]; 
+	}
+
+	public function save()
+	{
+		$model = new Banner();
+		$model->url = $this->url;
+		$model->sort = $this->sort;
+		return $model->save();
 	}
 }

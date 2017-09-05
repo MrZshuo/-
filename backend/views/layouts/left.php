@@ -35,12 +35,20 @@
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
+                        'label' => 'Banner图管理',
+                        'icon' => 'share', 
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '查看首页广告图','icon' => 'circle-o','url' => ['/banner/index']],
+                            ['label' => '上传首页广告图','icon' => 'circle-o','url' => ['/banner/create']],
+                        ]
+
+                    ],
+                    [
                         'label' => '账号管理',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
                             [
                                 'label' => '管理员',
                                 'icon' => 'share',
@@ -48,8 +56,6 @@
                                 'items' => [
                                     ['label' => '账号列表', 'icon' => 'circle-o', 'url' => ['/admin-user/index'],],
                                     ['label' => '添加账号', 'icon' => 'circle-o', 'url' => ['/admin-user/create'],],
-                                    ['label' => '修改账号', 'icon' => 'circle-o', 'url' => ['/admin-user/update'],],
-                                    ['label' => '删除账号', 'icon' => 'circle-o', 'url' => ['/admin-user/delete'],],
                                     [
                                         'label' => 'Level Two',
                                         'icon' => 'circle-o',
@@ -60,6 +66,12 @@
                                         ],
                                     ],
                                 ],
+                            ],
+                            [
+                                'label' => '会员',
+                                'icon' => 'share',
+                                'url' => '#'
+
                             ],
                         ],
                     ],

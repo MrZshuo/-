@@ -15,13 +15,19 @@ class Banner extends ActiveRecord
         return 'banner';
     }
 
-
+    public function rules()
+    {
+        return [
+            ['url','string','max'=>255],
+            ['sort','number'],
+        ];
+    }
     /**
      * @return array list of attribute names.
      */
     public function attributes()
     {
-        return ['_id','url','sort','width','height','type'];
+        return ['_id','url','sort','width','height','mime'];
     }
      /**
      * 给model对应的表创建索引的方法
@@ -41,4 +47,6 @@ class Banner extends ActiveRecord
             self::getCollection()->createIndex($columns, $options);
         }
     }
+
+
 }

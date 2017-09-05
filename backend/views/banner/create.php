@@ -22,6 +22,5 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
         // ],
     ],
 ]); ?>
-<!-- <?=$form->field($model,'file')->fileInput()?>
-<?=Html::submitButton(Yii::t('app','图片上传'))?> -->
+
 <?php ActiveForm::end(); ?>
