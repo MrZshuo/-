@@ -8,7 +8,7 @@
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?php echo Yii::$app->user->identity->username?></p>
+                <p><?php if(!Yii::$app->user->isGuest){echo Yii::$app->user->identity->username;}?></p>
 
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>

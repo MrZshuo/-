@@ -63,8 +63,7 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
         'height',
         'sort',
         // 更复杂的列数据
-        ['class' => 'yii\grid\ActionColumn'],
-
+        ['class' => 'yii\grid\ActionColumn','template' => '{update} {delete}',],
     ],
 ]);?>
 <?php Pjax::end(); ?>

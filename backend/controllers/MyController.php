@@ -8,10 +8,9 @@ namespace backend\controllers;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
-/*use backend\models\AdminRole;
-use backend\models\AdminUserRole;
-use backend\models\AdminLog;*/
 use yii\base\InvalidValueException;
 /**
  * backend 模块的controller配置
@@ -23,21 +22,45 @@ class MyController extends Controller
 		return Yii::getAlias('@backend/views') . DIRECTORY_SEPARATOR . $this->id;
     }
 	# 进行是否登录的验证
-	public function __construct($id, $module, $config = []){
+	public function init(){
 		
+		parent::init();
 		$isGuest = Yii::$app->user->isGuest;
 
 		
 		if($isGuest){
-			$this->redirect("/site/login"); # 立即跳转
+			return $this->redirect("/site/login"); # 立即跳转
 		}
-		
-		//echo ;
-		//echo 1;
-// echo Yii::$app->controller->id;exit();
-		//exit;  
-		parent::__construct($id, $module, $config);
+
 	}
+
+	public function behaviors()
+    {
+        return [
+/*            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout', 'signup'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],*/
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 	
 	# 如果登录成功，则进行账户权限的验证。
 /*	public function beforeAction($action)
