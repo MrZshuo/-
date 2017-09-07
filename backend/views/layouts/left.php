@@ -35,12 +35,15 @@
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
-                        'label' => 'Banner图管理',
+                        'label' => '网站编辑',
                         'icon' => 'share', 
                         'url' => '#',
                         'items' => [
-                            ['label' => '查看首页广告图','icon' => 'circle-o','url' => ['/banner/index']],
-                            ['label' => '上传首页广告图','icon' => 'circle-o','url' => ['/banner/create']],
+                            ['label' => '广告图','icon' => 'circle-o','url' => ['/banner/index'],
+                                
+
+                            ],
+                            ['label' => '产品编辑','icon' => 'circle-o','url' => ['/product/index']],
                         ]
 
                     ],

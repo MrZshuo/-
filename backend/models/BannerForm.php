@@ -10,6 +10,7 @@ class BannerForm extends Model
 {
 	
 	public $file;
+	public $name;
 	public $files;
 	public $url;
 	public $sort;
@@ -18,6 +19,7 @@ class BannerForm extends Model
 	{
 	    return [
 		    // [['file','files'], 'required'],
+	    	['name','string','max' => 50],
 	        [['file', 'files'], 'safe'],
 	        [['file'], 'string', 'max' => 255],
 	        [['sort'], 'number'],

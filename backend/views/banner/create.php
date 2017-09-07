@@ -1,6 +1,7 @@
 <?php
 // use Yii;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 ?>
@@ -16,7 +17,7 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
         'pick' => [
             'multiple' => true,
         ],
-        // 'server' => Url::to('upload/u2'),
+        'server' => Url::to('banner/upload'),
         // 'accept' => [
         //     'extensions' => 'png',
         // ],

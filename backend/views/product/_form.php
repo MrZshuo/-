@@ -18,9 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cost_price')->textInput(['maxlength' => true]) ?>
 
-    <!-- <?= $form->field($model, 'create_at')->textInput() ?> -->
 
-    <!-- <?= $form->field($model, 'update_at')->textInput() ?> -->
 
     <?= $form->field($model, 'size')->textInput(['maxlength' => true]) ?>
 

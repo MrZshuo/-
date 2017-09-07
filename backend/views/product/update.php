@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\Product */
@@ -14,10 +16,29 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="product-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+    <div>
+<?php $form = ActiveForm::begin([
+    'action'=>['upload'],
+    'method'=>'post',
+    'options' => ['enctype' => 'multipart/form-data'],
+])?>
+<!-- <?=$form->field($file,'name')->label('图片名')->textInput()?> -->
+<?=$form->field($file, 'file')->label('上传产品图')->widget('manks\FileInput', [
+    'clientOptions' => [
+        'pick' => [
+            'multiple' => true,
+        ],
+        'server' => Url::to(['upload','id'=>$model->id]),
+        // 'accept' => [
+        //     'extensions' => 'png',
+        // ],
+    ],
+]); ?>
 
+<?php ActiveForm::end(); ?>
+</div>
 </div>

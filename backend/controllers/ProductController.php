@@ -6,8 +6,12 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use common\models\mysql\Product;
 use common\models\mysql\ProductQuery;
+use common\models\mysql\ProductColor;
+use backend\models\Upload;
+use backend\models\BannerForm;
 use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\filters\VerbFilter;
 
 /**
@@ -36,7 +40,6 @@ class ProductController extends MyController
      */
     public function actionIndex()
     {
-        echo new DataTime();exit();
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),
         ]);
@@ -54,8 +57,9 @@ class ProductController extends MyController
      */
     public function actionView($id)
     {
+       
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id)
         ]);
     }
 
@@ -86,12 +90,13 @@ class ProductController extends MyController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $file = new BannerForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'file' => $file
             ]);
         }
     }
@@ -124,4 +129,47 @@ class ProductController extends MyController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionUpload($id)
+    {
+        $model = new Upload();
+        $info = $model->upImage();
+        // return json_encode($info);
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if($info && is_array($info) && $this->save($info,$id))
+            return $info;
+        else
+            return ['code' => 1,'msg' => 'error'];
+    }
+
+    private function save($info,$id)
+    {
+        $model = new ProductColor();
+        $model->product_id = intval($id);
+        $model->name = 'red';
+        $model->image_url = $info['url'];
+        $res = $this->imageSize($info['attachment']);
+        $model->image_width = $res['width'];
+        $model->image_height = $res['height'];
+        $model->image_mime = $res['mime'];
+
+        return $model->save();
+    }
+
+    //获取图片的尺寸
+    private function imageSize($imagePath)
+    {
+        $size = getimagesize($imagePath);
+        $a = explode(" ", $size[3]);
+        $res = array();
+        for($i = 0;$i<count($a);$i++)
+        {
+            $temp = explode("=", $a[$i]);
+            $res[$temp[0]] = (int)trim($temp[1],'"');
+        }
+        $res['mime'] = $size['mime'];
+        return $res;
+    }
+
+
 }

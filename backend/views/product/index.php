@@ -12,27 +12,41 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         // 'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
-            'id',
+            // 'id',
             'name',
             'price',
             'cost_price',
             'create_at',
-            // 'update_at',
-            // 'size',
+            'update_at',
+            'size',
+            'admin_name',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{create}',
+                'buttons' => [
+                    'create' => function ($url, $model, $key) {
+                        return Html::a('添加描述', ['/product-description/create', 'id' => $key], ['class'=>'btn btn-sm btn-primary']);
+                    }
+                ],
+                'options' => [
+                    'width' => 5
+                ]
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作'],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+    <p>
+        <?= Html::a(Yii::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+</div>

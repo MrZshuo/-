@@ -7,7 +7,7 @@ return [
 	'imageUploadSuccessPath' => 'uploads/', // 图片上传成功后，路径前缀
     'webuploader' => [
     	//后端图片处理路径
-    	'uploadUrl' => 'banner/upload',
+    	// 'uploadUrl' => 'banner/upload',
     	'delimiter' => ',',
 
     	'baseConfig' => [

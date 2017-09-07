@@ -18,6 +18,7 @@ class Banner extends ActiveRecord
     public function rules()
     {
         return [
+            ['name','string'],
             ['url','string','max'=>255],
             ['sort','number'],
         ];
@@ -27,7 +28,7 @@ class Banner extends ActiveRecord
      */
     public function attributes()
     {
-        return ['_id','url','sort','width','height','mime'];
+        return ['_id','name','url','sort','width','height','mime'];
     }
      /**
      * 给model对应的表创建索引的方法

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--     <p>
         <?= Html::a(Yii::t('app', '新增'), ['create'], ['class' => 'btn btn-success']) ?>
     </p> -->
-    <?php $form = ActiveForm::begin([
+<?php $form = ActiveForm::begin([
     'action'=>['upload'],
     'method'=>'post',
     'options' => ['enctype' => 'multipart/form-data'],
@@ -30,7 +31,7 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
         'pick' => [
             'multiple' => true,
         ],
-        // 'server' => Url::to('upload/u2'),
+        'server' => Url::to('upload'),
         // 'accept' => [
         //     'extensions' => 'png',
         // ],
