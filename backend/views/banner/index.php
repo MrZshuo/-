@@ -9,7 +9,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\AdminUserQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Banner');
+$this->title = Yii::t('app', '首页广告图');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="banner-index">
@@ -20,25 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--     <p>
         <?= Html::a(Yii::t('app', '新增'), ['create'], ['class' => 'btn btn-success']) ?>
     </p> -->
-<?php $form = ActiveForm::begin([
-    'action'=>['upload'],
-    'method'=>'post',
-    'options' => ['enctype' => 'multipart/form-data'],
-    ])?>
-<?php 
-echo $form->field($model, 'files')->widget('manks\FileInput', [
-    'clientOptions' => [
-        'pick' => [
-            'multiple' => true,
-        ],
-        'server' => Url::to('upload'),
-        // 'accept' => [
-        //     'extensions' => 'png',
-        // ],
-    ],
-]); ?>
 
-<?php ActiveForm::end(); ?>
 <?php Pjax::begin(); ?>    
 <?php echo GridView::widget([
     'dataProvider' => $dataProvider,
@@ -47,7 +29,7 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
         // 数据提供者中所含数据所定义的简单的列
         // 使用的是模型的列的数据
         [
-        'label' => 'banner',
+        'label' => '首页大图',
         'format' => [
             'image', 
             [
@@ -68,4 +50,23 @@ echo $form->field($model, 'files')->widget('manks\FileInput', [
     ],
 ]);?>
 <?php Pjax::end(); ?>
+
+<?php $form = ActiveForm::begin([
+    'action'=>['upload'],
+    'method'=>'post',
+    'options' => ['enctype' => 'multipart/form-data'],
+    ])?>
+<?php 
+echo $form->field($model, 'files')->label('上传广告图')->widget('manks\FileInput', [
+    'clientOptions' => [
+        'pick' => [
+            'multiple' => true,
+        ],
+        'server' => Url::to('upload'),
+        // 'accept' => [
+        //     'extensions' => 'png',
+        // ],
+    ],
+]); ?>
+<?php ActiveForm::end(); ?>
 </div>

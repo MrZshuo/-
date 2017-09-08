@@ -8,8 +8,7 @@ use yii\db\ActiveRecord;
 */
 class Language extends ActiveRecord
 {
-	public $name;
-	public $status = 0;
+
 	
 	public static function tableName()
 	{
@@ -22,5 +21,12 @@ class Language extends ActiveRecord
 			[['name','status'],'required'],
 			['name','string','max'=>255]
 		];
+	}
+
+	public function beforeSave($insert)
+	{
+		if(parent::beforeSave($insert))
+			if($this->status)
+				$this->status = 0;   //设置语言默认不支持
 	}
 }

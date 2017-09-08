@@ -3,11 +3,13 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\web\Response;
+use yii\web\NotFoundHttpException;
 use common\models\mysql\ProductDescription;
 use common\models\mysql\Language;
 use backend\models\ProductDescriptionSearch;
+use backend\models\Upload;
 use backend\controllers\MyController;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -28,6 +30,28 @@ class ProductDescriptionController extends MyController
                 ],
             ],
         ];
+    }
+
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'kucha\ueditor\UEditorAction',
+                'config' => [
+                    'imageUrlPrefix' => 'http://images.yii.com',
+                    'imageRoot' => '../../images',
+                    'imagePathFormat' => '/uploads/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+                    "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
+                ],
+            ],
+        ];
+    }
+
+    public function upload()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new Upload();
+        $info = $model -> upImage();
     }
 
     /**

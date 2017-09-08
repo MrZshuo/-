@@ -18,11 +18,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'display_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'key_words')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'short_info')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'key_words')->textInput(['maxlength' => true]) ?>
+    <!-- <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?> -->
+    <?= $form->field($model,'content')->widget('kucha\ueditor\UEditor',[
+         // 'lang' =>'zh-cn', //英文为 en
+    ])?>
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

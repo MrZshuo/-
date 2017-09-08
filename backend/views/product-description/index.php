@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\ProductDescriptionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Product Descriptions');
+$this->title = Yii::t('app', '产品详情');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-description-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Product Description'), ['create'], ['class' => 'btn btn-success']) ?>
+        <!-- <?= Html::a(Yii::t('app', 'Create Product Description'), ['create'], ['class' => 'btn btn-success']) ?> -->
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,14 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
             [
              'label' => '语言',
              'value' => function($model){
-                return $model->languageName->name?$model->languageName->name:'english';
+                return $model->languageName->name;
              }
             ],
-            'content:ntext',
-            'short_info',
+            [
+             'label' => '产品简介',
+             'value' => function($model){
+                $str = strip_tags($model->short_info);
+                return mb_strlen($str)>20 ? mb_substr($str, 0,20).'...' : $str;
+             }
+            ],
+            [
+             'label' => '产品介绍',
+             'value' => function($model){
+                $str = strip_tags($model->content);
+                return mb_strlen($str)>20 ? mb_substr($str, 0,20).'...' : $str;
+             }
+            ],
+            // 'short_info',
             // 'key_words',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','template' => '{update}{delete}'],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

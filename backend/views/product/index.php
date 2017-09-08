@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\mysql\ProductQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Products');
+$this->title = Yii::t('app', '产品');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{create}',
                 'buttons' => [
                     'create' => function ($url, $model, $key) {
-                        return Html::a('添加描述', ['/product-description/create', 'id' => $key], ['class'=>'btn btn-sm btn-primary']);
+                        return Html::a('添加详情', ['/product-description/create', 'id' => $key], ['class'=>'btn btn-sm btn-primary']);
                     }
                 ],
                 'options' => [
