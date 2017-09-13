@@ -28,7 +28,7 @@ class Banner extends ActiveRecord
      */
     public function attributes()
     {
-        return ['_id','name','url','sort','width','height','mime'];
+        return ['_id','name','url','attachment','sort','width','height','mime'];
     }
      /**
      * 给model对应的表创建索引的方法

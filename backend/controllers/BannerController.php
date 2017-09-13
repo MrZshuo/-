@@ -37,7 +37,10 @@ class BannerController extends MyController
 //删除图片
 	public function actionDelete($id)
 	{
-		$this->findModel($id)->delete();
+		$model = $this->findModel($id);
+		if($model->attachment)
+			unlink($model->attachment);
+		$model->delete();
 		return $this->redirect(['index']);
 	}
 
@@ -79,6 +82,7 @@ class BannerController extends MyController
         	return true;
         $model->sort = 0;
         $res = $this->imageSize($info['attachment']);
+        $model->attachment = $info['attachment'];
         $model->width = $res['width'];
         $model->height = $res['height'];
         $model->mime = $res['mime'];

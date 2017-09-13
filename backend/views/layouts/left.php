@@ -25,12 +25,41 @@
             </div>
         </form>
         <!-- /.search form -->
+<?php 
+    echo dmstr\widgets\Menu::widget([
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => [
+                    ['label' => '菜单', 'options' => ['class' => 'header']]]
+        ]);
+    $callback = function($menu)
+    {
+        $data = json_decode($menu['data'],true);
+        $return = [
+            'label' => $menu['name'],
+            'url' => [$menu['route']],
+            'items' => $menu['children']
+        ];
+ 
+        isset($data['visible']) ? $return['visible'] = $data['visible'] : $return['visible'] = true;
+        unset($data['visible']);
+        isset($data['icon']) ? $return['icon'] = $data['icon'] : $return['icon'] = ' ';
+        unset($data['icon']);
+        //其它属性
+        if($data && is_array($data))
+            $return['options'] = $data;
+        return $return;
+    };
 
-        <?= dmstr\widgets\Menu::widget(
+    echo dmstr\widgets\Menu::widget( [
+     'options' => ['class' => 'sidebar-menu'], 
+     'items' => mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id,null,$callback), 
+    ] );
+?>
+<!--         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                    ['label' => 'Menu 菜单', 'options' => ['class' => 'header']],
+                    ['label' => '菜单', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
@@ -94,7 +123,7 @@
                         ],
                 ],
             ]
-        ) ?>
+        ) ?> -->
 
     </section>
 

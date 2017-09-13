@@ -33,12 +33,7 @@ return [
             'class' => 'yii\rbac\DbManager',
             'defaultRoles' => ['guest'],
         ],
-        'as access' => [
-            'class' => 'mdm\admin\components\AccessControl',
-            'allowAction' =>[
 
-            ]
-        ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
@@ -60,10 +55,17 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                 '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                '<controller:\w+>/<id:\d+>'=>'<controller>/view',
+                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
             ],
         ],
         
     ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' =>[
+                'site/login',
+            ]
+        ],
     'params' => $params,
 ];
