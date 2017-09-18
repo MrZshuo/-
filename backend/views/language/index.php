@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\Language */
 
-$this->title = Yii::t('app', 'Language');
+$this->title = Yii::t('app', '语言');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="language-index">
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute' => 'status',
-                'label' => 'status',
+                'label' => '状态',
                 'value' => function($dataProvider){
                     if($dataProvider->status)
                         return '支持';

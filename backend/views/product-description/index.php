@@ -24,16 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
             [
+             'attribute' => 'product_id',
              'label' => '产品名',
              'value' => function($model){
                 return $model->productName->name;
-             }
+             },
             ],
             [
+             'attribute' => 'language_id',
              'label' => '语言',
              'value' => function($model){
                 return $model->languageName->name;
-             }
+             },
+             'filter' => common\models\mysql\Language::find()->select(['name','id'])->indexBy('id')->column(),
             ],
             [
              'label' => '产品简介',

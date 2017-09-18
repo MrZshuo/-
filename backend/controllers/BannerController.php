@@ -5,7 +5,7 @@ use Yii;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
-use common\models\mongodb\Banner;
+use common\models\mysql\Banner;
 use backend\models\BannerForm;
 use backend\models\Upload;
 /**
@@ -49,7 +49,7 @@ class BannerController extends MyController
 		if(($model = Banner::findOne($id)) !== null)
 			return $model;
 		else
-			throw new NotFoundHttpException('The requested page does not exist.');
+			throw new NotFoundHttpException('页面不存在.');
 	}
 //图片上传
 	public function actionCreate()
@@ -72,7 +72,7 @@ class BannerController extends MyController
 		else
 			return ['code' => 1,'msg' => 'error'];
 	}
-//图片保存到数据库中mongodb
+//图片保存到数据库中mysql
 	public function saveBanner($info)
     {
         // var_dump($info);exit();

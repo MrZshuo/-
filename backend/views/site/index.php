@@ -1,53 +1,76 @@
 <?php
+use yii\grid\GridView;
+use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
+$this->title = '流量统计';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="info-box bg-green ">
+                <div class="">今日访问量</div>
+                <div class="text-center" style="font-size: 30px;"><?php echo $count->day?></div>
+            </div>
+        </div>     
+        <div class="col-xs-3">
+            <div class="info-box bg-yellow ">
+                <div class="">本周访问量</div>
+                <div class="text-center" style="font-size: 30px;"><?php echo $count->week?></div>
+            </div>
+        </div>     
+        <div class="col-xs-3">
+            <div class="info-box bg-purple ">
+                <div class="">本月访问量</div>
+                <div class="text-center" style="font-size: 30px;"><?php echo $count->month?></div>
+            </div>
+        </div>     
+        <div class="col-xs-3">
+            <div class="info-box bg-blue ">
+                <div class="">总问量</div>
+                <div class="text-center" style="font-size: 30px;"><?php echo $count->total?></div>
+            </div>
+        </div>    
     </div>
-
     <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
+        <div><h3>最新询盘</h3></div>
+<?php Pjax::begin(); ?><?=GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
+                'email',
+                [
+                    'label' => '姓名',
+                    'value' => function($model)
+                    {
+                        return $model->firstname.' '.$model->lastname;
+                    }
+                ],
+                [
+                    'label' => '标题',
+                    'value' => function($model)
+                    {
+                        return mb_strlen($model->theme,'utf-8') > 20 ? mb_substr($model->theme, 0, 20,'utf-8').'...' : $model->theme;
+                    }
+                ],
+                'telephone',
+                'create_at',
+                [
+                    'attribute' => 'status',
+                    'label' => '状态',
+                    'value' => function($model)
+                    {
+                        if($model->status == 0) return '未查看';
+                        else if($model->status == 1) return '已查看';
+                    },
+                    // 'filter' => ''
+                    // 'options'=>[
+                    //     'class' => ['bg-green'],
+                    // ],
+                ],
+                ['class' => 'yii\grid\ActionColumn','header'=> '操作','template'=>'{view}'],
+            ],
+        ])?>
+<?php Pjax::end(); ?>
     </div>
 </div>

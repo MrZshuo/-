@@ -1,6 +1,7 @@
 <?php
 namespace common\models\mysql;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -23,10 +24,19 @@ class Language extends ActiveRecord
 		];
 	}
 
-	public function beforeSave($insert)
+	public function attributeLabels()
+	{
+		return [
+			'id' => Yii::t('app','ID'),
+			'name' => Yii::t('app','语言'),
+			'status' => Yii::t('app','状态'),
+		];
+	}
+
+/*	public function beforeSave($insert)
 	{
 		if(parent::beforeSave($insert))
-			if($this->status)
+			if(!$this->status)
 				$this->status = 0;   //设置语言默认不支持
-	}
+	}*/
 }

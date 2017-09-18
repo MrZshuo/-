@@ -6,6 +6,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\LoginForm;
+use common\models\mysql\VisitorCount;
+use common\models\mysql\Customer;
 
 /**
  * Site controller
@@ -26,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -62,7 +64,37 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = VisitorCount::find()->all();
+        $customer = new \yii\data\ActiveDataProvider([
+            'query' => Customer::find(),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'attributes' => ['create_at'=>SORT_DESC,'status'=>SORT_ASC],
+            ],
+        ]);
+        return $this->render('index',['count' => $model[0],'dataProvider' => $customer]);
+    }
+    //显示客户询盘详情
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+        if($model->status == 0)
+        {
+            $model->status = 1;
+            $model->save();
+        }
+        return $this->render('view',['model'=>$model]);
+    }
+    //判断是否存在该条询盘讯息
+    public function findModel($id)
+    {
+        if(($model = Customer::findOne($id)) !== null)
+            return $model;
+        else
+            throw new NotFoundHttpException("页面不存在.");
+            
     }
 
     /**

@@ -26,8 +26,39 @@ class LanguageController extends MyController
 	{
 		$model = new Language();
 		if($model->load(Yii::$app->request->post()) && $model->save())
-			return $this->redirect('index');
+			return $this->redirect(['index']);
 		else
 			return $this->render('create',['model'=>$model]);
+	}
+
+	public function actionUpdate($id)
+	{
+		$model = $this->findModel($id);
+		if($model->load(Yii::$app->request->post()) && $model->save())
+			return $this->redirect(['index']);
+		else
+			return $this->render('update',['model'=>$model]);
+	}
+
+	/**
+     * Deletes an existing Product model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+	public function actionDelete($id)
+	{
+		$this->findModel($id)->delete();
+
+		return $this->redirect(['index']);
+	}
+
+	public function findModel($id)
+	{
+		if(($model = Language::findOne($id)) !== null)
+			return $model;
+		else
+			throw new NotFoundHttpException("数据不存在");
+			
 	}
 }
