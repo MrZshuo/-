@@ -39,4 +39,9 @@ class Language extends ActiveRecord
 			if(!$this->status)
 				$this->status = 0;   //设置语言默认不支持
 	}*/
+//获取所有语言
+	public static function getLanguageMap()
+	{
+		return self::find()->select(['name','id'])->indexBy('id')->column();
+	}
 }

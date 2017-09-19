@@ -42,6 +42,12 @@ class ProductController extends MyController
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                // 'defaultOrder' => []
+            ],
         ]);
 
         return $this->render('index', [

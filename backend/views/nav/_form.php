@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use common\models\mysql\Language;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\Nav */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'language_id')->dropDownList($language) ?>
+    <?= $form->field($model, 'language_id')->dropDownList(Language::getLanguageMap()) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

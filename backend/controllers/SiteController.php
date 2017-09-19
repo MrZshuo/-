@@ -71,7 +71,7 @@ class SiteController extends Controller
                 'pageSize' => 10,
             ],
             'sort' => [
-                'attributes' => ['create_at'=>SORT_DESC,'status'=>SORT_ASC],
+                'defaultOrder' => ['status'=>SORT_ASC,'create_at'=>SORT_DESC],
             ],
         ]);
         return $this->render('index',['count' => $model[0],'dataProvider' => $customer]);

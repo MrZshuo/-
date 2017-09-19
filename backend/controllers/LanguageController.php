@@ -16,7 +16,13 @@ class LanguageController extends MyController
 	public function actionIndex()
 	{
 		$dataProvider = new ActiveDataProvider([
-			'query' => Language::find()
+			'query' => Language::find(),
+			'pagination' => [
+				'pageSize' => 10,
+			],
+			'sort' => [
+				'defaultOrder' => ['status'=> SORT_DESC], 
+			],
 		]);
 		// $model = $query->getModels();
 		return $this->render('index',['dataProvider' => $dataProvider]);

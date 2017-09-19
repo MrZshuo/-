@@ -19,6 +19,12 @@ class BannerController extends MyController
 		$model = new BannerForm();
 		$dataProvider = new ActiveDataProvider([
 			'query' => Banner::find(),
+			'pagination' => [
+				'pageSize' => 5,
+			],
+			'sort' => [
+				'defaultOrder' => ['sort' => SORT_ASC],
+			]
 		]);
 		return $this->render('index',['dataProvider'=>$dataProvider,'model'=>$model]);
 	}

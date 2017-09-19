@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace common\models\mysql;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\mysql\ProductImages;
+use common\models\mysql\Article;
 
 /**
- * ProductImagesSearch represents the model behind the search form about `common\models\mysql\ProductImages`.
+ * ArticalSearch represents the model behind the search form about `common\models\mysql\Article`.
  */
-class ProductImagesSearch extends ProductImages
+class ArticalSearch extends Article
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ProductImagesSearch extends ProductImages
     public function rules()
     {
         return [
-            [['id', 'product_id', 'image_width', 'image_height'], 'integer'],
-            [['name', 'image_url', 'image_mime'], 'safe'],
+            [['id', 'language_id', 'sort', 'status'], 'integer'],
+            [['nav_id', 'title', 'author', 'image_url', 'info', 'content', 'create_at', 'update_at'], 'safe'],
         ];
     }
 
@@ -41,18 +41,12 @@ class ProductImagesSearch extends ProductImages
      */
     public function search($params)
     {
-        $query = ProductImages::find();
+        $query = Article::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                // 'defaultOrder' => [],
-            ],
         ]);
 
         $this->load($params);
@@ -66,14 +60,19 @@ class ProductImagesSearch extends ProductImages
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'product_id' => $this->product_id,
-            'image_width' => $this->image_width,
-            'image_height' => $this->image_height,
+            'language_id' => $this->language_id,
+            'create_at' => $this->create_at,
+            'update_at' => $this->update_at,
+            'sort' => $this->sort,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'nav_id', $this->nav_id])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'author', $this->author])
             ->andFilterWhere(['like', 'image_url', $this->image_url])
-            ->andFilterWhere(['like', 'image_mime', $this->image_mime]);
+            ->andFilterWhere(['like', 'info', $this->info])
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

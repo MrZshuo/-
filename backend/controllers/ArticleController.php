@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\mysql\Nav;
-use common\models\mysql\Language;
-use backend\models\NavSearch;
+use yii\helpers\Url;
+use common\models\mysql\Article;
+use common\models\mysql\ArticalSearch;
 use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * NavController implements the CRUD actions for Nav model.
+ * ArticleController implements the CRUD actions for Article model.
  */
-class NavController extends MyController
+class ArticleController extends MyController
 {
     /**
      * @inheritdoc
@@ -31,12 +31,12 @@ class NavController extends MyController
     }
 
     /**
-     * Lists all Nav models.
+     * Lists all Article models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new NavSearch();
+        $searchModel = new ArticalSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class NavController extends MyController
     }
 
     /**
-     * Displays a single Nav model.
+     * Displays a single Article model.
      * @param integer $id
      * @return mixed
      */
@@ -58,25 +58,25 @@ class NavController extends MyController
     }
 
     /**
-     * Creates a new Nav model.
+     * Creates a new Article model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Nav();
+        $model = new Article();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'language' => $language, 
             ]);
         }
     }
 
     /**
-     * Updates an existing Nav model.
+     * Updates an existing Article model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -86,7 +86,7 @@ class NavController extends MyController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -95,7 +95,7 @@ class NavController extends MyController
     }
 
     /**
-     * Deletes an existing Nav model.
+     * Deletes an existing Article model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -108,18 +108,28 @@ class NavController extends MyController
     }
 
     /**
-     * Finds the Nav model based on its primary key value.
+     * Finds the Article model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Nav the loaded model
+     * @return Article the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Nav::findOne($id)) !== null) {
+        if (($model = Article::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionNav($language_id)
+    {
+        $data = \common\models\mysql\Nav::getNavMap($language_id);
+        $str = '';
+        foreach ($data as $key => $value) {
+            $str .= '<option value='.$key.'>'.$value.'</option>';
+        }
+        return $str;
     }
 }

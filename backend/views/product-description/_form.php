@@ -22,7 +22,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'short_info')->textInput(['maxlength' => true]) ?>
 
-    <!-- <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?> -->
     <?= $form->field($model,'content')->widget('kucha\ueditor\UEditor',[
          // 'lang' =>'zh-cn', //英文为 en
     ])?>

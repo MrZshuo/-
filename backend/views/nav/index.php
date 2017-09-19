@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 {
                     return $model->languageName->name;
                 },
-                'filter' => common\models\mysql\Nav::get_type(),
+                'filter' => common\models\mysql\Language::getLanguageMap(),
             ],
             'sort',
 

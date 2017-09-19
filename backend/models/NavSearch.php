@@ -47,6 +47,12 @@ class NavSearch extends Nav
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+            'sort' => [
+                'defaultOrder' => ['sort' => SORT_ASC],
+            ]
         ]);
 
         $this->load($params);

@@ -57,10 +57,8 @@ class Nav extends \yii\db\ActiveRecord
         return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
     }
 
-    public static function get_type()
+    public static function getNavMap($language_id)
     {
-       $lan = Language::find()->select(['id','name'])->where(['status'=>1])->all();
-       $data = ArrayHelper::map($lan,'id','name');
-       return $data; 
+       return self::find()->select(['name','id'])->where(['language_id'=>$language_id])->indexBy('id')->column();
     }
 }
