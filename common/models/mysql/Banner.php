@@ -40,4 +40,6 @@ class Banner extends ActiveRecord
         ];
     }
 
+
+
 }

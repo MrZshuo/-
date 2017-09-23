@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\models\mysql\Article */
 
 $this->title = Yii::t('app', '新增');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Articles'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', '文章'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-create">

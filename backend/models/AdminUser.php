@@ -53,8 +53,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'auth_key' => Yii::t('app', '权限key'),
             'password' => Yii::t('app', '密码'),
             'email' => Yii::t('app', '邮件'),
-//            'created_at' => Yii::t('app', 'Created At'),
-//            'updated_at' => Yii::t('app', 'Updated At'),
+            'created_at' => Yii::t('app', '创建时间'),
+            'updated_at' => Yii::t('app', '更新时间'),
         ];
     }
 
@@ -130,5 +130,21 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function getRole()
+    {
+        $userRole = Assignment::getUserRole($this->id);
+        return $userRole['item_name'];
     }
 }

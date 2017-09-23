@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'product_id',
             'language_id',
+            'key_words',
             [
                 'label' => '产品简介',
                 'value' => function($model){
@@ -47,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return strip_tags($model->content);
                 }
             ],
-            'key_words',
         ],
     ]) ?>
 

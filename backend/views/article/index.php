@@ -24,8 +24,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
             // 'id',
-            'language_id',
-            'nav_id',
+            [
+                'attribute' => 'language_id',
+                'value' => function($model)
+                {
+                    return $model->languageName->name;
+                },
+                'filter' => \common\models\mysql\Language::getLanguageMap(),
+            ],
+            [
+                'attribute' => 'nav_id',
+                'value' => function($model)
+                {
+                    return $model->navName->name;
+                },
+            ],
             'title',
             'author',
             // 'image_url:url',

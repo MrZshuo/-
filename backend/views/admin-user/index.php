@@ -7,32 +7,47 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\AdminUserQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Admin Users');
+$this->title = Yii::t('app', '管理员');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="admin-user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Admin User'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', '添加管理员'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
-            'id',
             'username',
-            // 'auth_key',
-            // 'password_hash',
             'email:email',
             'created_at',
             'updated_at',
+            [
+                'label' => '角色',
+                'value' => function($model)
+                {
+                    $res = \backend\models\Assignment::getUserRole($model->id);
+                    return $res['item_name'];
+                }
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template'=>'{update} {delete}  {reset-password}',
+                'buttons' =>[
+                    'reset-password' => function($url,$model,$key)
+                    {
+                        $options = [
+                            'title' => Yii::t('app','密码重置'),
+                            'aria-label' => Yii::t('app','密码重置'),
+                        ];
+                        return Html::a('<i class="fa fa-key" aria-hidden="true"></i>',$url,$options);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

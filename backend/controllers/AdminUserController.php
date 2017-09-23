@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use backend\models\AdminUser;
 use backend\models\AdminUserQuery;
+use backend\models\Assignment;
+use backend\models\ResetPasswordForm;
 use backend\controllers\MyController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -38,7 +40,6 @@ class AdminUserController extends MyController
      */
     public function actionIndex()
     {
-
         $searchModel = new AdminUserQuery();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -69,7 +70,7 @@ class AdminUserController extends MyController
     {
         $model = new \backend\models\AdminUserForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -104,9 +105,21 @@ class AdminUserController extends MyController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $userRole = Assignment::getUserRole($id);
+        //超级管理员不可删除
+        if($userRole['item_name'] !== '超级管理员')
+            $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    //密码重置
+    public function actionResetPassword($id)
+    {
+        $model = new ResetPasswordForm($id);
+        if($model->load(Yii::$app->request->post()) && $model->resetPassword())
+            return $this->redirect('index');
+        else
+            return $this->render('resetPassword',['model' => $model]);
     }
 
     /**

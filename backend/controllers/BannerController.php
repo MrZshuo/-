@@ -44,7 +44,7 @@ class BannerController extends MyController
 	public function actionDelete($id)
 	{
 		$model = $this->findModel($id);
-		if($model->attachment)
+		if(file_exists($model->attachment))
 			unlink($model->attachment);
 		$model->delete();
 		return $this->redirect(['index']);
@@ -60,10 +60,11 @@ class BannerController extends MyController
 //图片上传
 	public function actionCreate()
 	{
-		// echo Yii::getAlias('@webroot');exit();
-
 		$model = new BannerForm();
-		return $this->render('create',['model'=>$model]);
+		if($model->load(Yii::$app->request->post()) && $model->validate() && $model->save())
+			$this->redirect('index');
+		else
+			return $this->render('create',['model' => $model]);
 	}
 //图片上传处理
 	public function actionUpload()
@@ -71,7 +72,7 @@ class BannerController extends MyController
 		$model = new Upload();
 		$info = $model->upImage();
 		Yii::$app->response->format = Response::FORMAT_JSON;
-		if($info && is_array($info) && $this->saveBanner($info))
+		if($info && is_array($info))
 		{
 			return $info;
 		}

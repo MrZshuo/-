@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
@@ -23,13 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'name',
+            [
+                'label' => '产品主图',
+                'format' => [
+                    'image', 
+                    ['width'=>'80','height'=>'80']
+                ],
+                'value' => function($model)
+                {
+                    return Yii::$app->params['domain'].$model->image_url;
+                },
+            ],
             'price',
-            'cost_price',
+            'freight',
             'create_at',
             'update_at',
             'size',
             'admin_name',
-            [
+/*            [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{create}',
                 'buttons' => [
@@ -40,13 +52,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => [
                     'width' => 5
                 ]
-            ],
+            ],*/
 
-            ['class' => 'yii\grid\ActionColumn','header'=>'操作'],
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{view} {update} {delete}   {product-description}',
+                'buttons' => [
+                    'product-description' => function($url,$model,$key)
+                    {
+                        $options = [
+                            'title' => Yii::t('app','添加详情'),
+                            'aria-label' => Yii::t('app','添加详情'),
+                        ];
+                        return Html::a('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',Url::to(['/product-description/create','id'=>$model->id]),$options);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?>
     <p>
-        <?= Html::a(Yii::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', '新增产品'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 </div>

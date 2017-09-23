@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-description-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <!-- <?= Html::a(Yii::t('app', 'Create Product Description'), ['create'], ['class' => 'btn btn-success']) ?> -->
@@ -29,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
              'value' => function($model){
                 return $model->productName->name;
              },
+             'filter' => common\models\mysql\Product::find()->select(['name','id'])->indexBy('id')->column(),
             ],
             [
              'attribute' => 'language_id',
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'short_info',
             // 'key_words',
 
-            ['class' => 'yii\grid\ActionColumn','template' => '{update}{delete}'],
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{view}{update}{delete}'],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

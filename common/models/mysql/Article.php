@@ -66,4 +66,15 @@ class Article extends \yii\db\ActiveRecord
             'status' => Yii::t('app', '状态'),
         ];
     }
+    //获取language name
+    public function getLanguageName()
+    {
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
+    }
+
+    //获取nav name
+    public function getNavName()
+    {
+        return $this->hasOne(Nav::className(),['id'=>'nav_id'])->select('name');
+    }
 }

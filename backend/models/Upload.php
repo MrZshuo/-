@@ -39,9 +39,9 @@ class Upload extends Model
         }
         $relativePath = $successPath = '';
         if ($this->validate()) {
-            $date = date('Ymd');
-            $relativePath = Yii::$app->params['imageUploadRelativePath'].'image/'.$date.'/';
-            $successPath = Yii::$app->params['imageUploadSuccessPath'].'image/'.$date.'/';
+            $dirPath = date('Ymd').'/';
+            $successPath = Yii::$app->params['imageUploadSuccessPath'].$dirPath;
+            $relativePath = Yii::$app->params['imageUploadRelativePath'].$successPath;
             $fileName = $this->file->baseName . '.' . $this->file->extension;
             $filePath = $relativePath . $fileName;
             if (!is_dir($relativePath)) {
@@ -54,7 +54,7 @@ class Upload extends Model
             return [
                 'code' => 0,
                 'url' => Yii::$app->params['domain'] . $successPath. $fileName,
-                'attachment' => $filePath
+                'attachment' => $successPath. $fileName
             ];
         } else {
             $errors = $this->errors;

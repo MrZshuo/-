@@ -55,12 +55,12 @@ class ProductDescription extends \yii\db\ActiveRecord
             'key_words' => Yii::t('app', '产品关键字'),
         ];
     }
-
+    //获取产品编号
     public function getProductName()
     {
         return $this->hasOne(Product::className(),['id'=>'product_id'])->select('name');
     }
-
+    //获取语言
     public function getLanguageName()
     {
         return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');

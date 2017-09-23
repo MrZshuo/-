@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use common\models\mysql\Nav;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\NavSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'name',
-            [
+/*            [
                 'attribute' => 'language_id',
                 'label' => '语言',
                 'value' => function($model)
@@ -34,6 +35,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->languageName->name;
                 },
                 'filter' => common\models\mysql\Language::getLanguageMap(),
+            ],*/
+            [
+                'attribute' => 'pid',
+                'value' => function($model)
+                {
+                    if($model->pid == 0)
+                        return '一级导航';
+                    else
+                    {
+                        $data = Nav::findOne($model->pid);
+                        return $data->name;
+                    }
+                },
             ],
             'sort',
 

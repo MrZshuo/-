@@ -122,7 +122,7 @@ class ArticleController extends MyController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
+    //语言 导航两级联动
     public function actionNav($language_id)
     {
         $data = \common\models\mysql\Nav::getNavMap($language_id);
@@ -131,5 +131,16 @@ class ArticleController extends MyController
             $str .= '<option value='.$key.'>'.$value.'</option>';
         }
         return $str;
+    }
+
+    public function upload()
+    {
+        Yii::$app->response->format = Response::JSON_FORMAT;
+        $model = new Upload();
+        $info = $model->upImage();
+        if($info && is_array($info))
+        {
+            
+        }
     }
 }

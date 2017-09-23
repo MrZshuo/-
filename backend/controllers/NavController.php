@@ -66,11 +66,10 @@ class NavController extends MyController
     {
         $model = new Nav();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+            return $this->redirect('create');
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'language' => $language, 
             ]);
         }
     }
@@ -102,8 +101,9 @@ class NavController extends MyController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $model->status = 0;
+        $model->save();
         return $this->redirect(['index']);
     }
 

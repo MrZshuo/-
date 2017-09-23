@@ -17,9 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<!--     <p>
+    <p>
         <?= Html::a(Yii::t('app', '新增'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p> -->
+    </p> 
 
 <?php Pjax::begin(); ?>    
 <?php echo GridView::widget([
@@ -56,22 +56,4 @@ $this->params['breadcrumbs'][] = $this->title;
 ]);?>
 <?php Pjax::end(); ?>
 
-<?php $form = ActiveForm::begin([
-    'action'=>['upload'],
-    'method'=>'post',
-    'options' => ['enctype' => 'multipart/form-data'],
-    ])?>
-<?php 
-echo $form->field($model, 'files')->label('上传广告图')->widget('manks\FileInput', [
-    'clientOptions' => [
-        'pick' => [
-            'multiple' => true,
-        ],
-        'server' => Url::to('upload'),
-        // 'accept' => [
-        //     'extensions' => 'png',
-        // ],
-    ],
-]); ?>
-<?php ActiveForm::end(); ?>
 </div>

@@ -41,7 +41,7 @@ class ProductController extends MyController
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
+            'query' => Product::find()->where(['status'=>1]),
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -115,8 +115,16 @@ class ProductController extends MyController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id,'Product');
+        if(Yii::$app->user->identity->role == '超级管理员' || Yii::$app->user->identity->username == $model->admin_name)
+        {
+            $model->delete();
+        }
+        else
+        {   
+            $model->status = 0;
+            $model->save();
+        }
         return $this->redirect(['index']);
     }
 
@@ -177,6 +185,5 @@ class ProductController extends MyController
         $res['mime'] = $size['mime'];
         return $res;
     }
-
 
 }

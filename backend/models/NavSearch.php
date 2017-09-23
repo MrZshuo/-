@@ -41,7 +41,7 @@ class NavSearch extends Nav
      */
     public function search($params)
     {
-        $query = Nav::find();
+        $query = Nav::find()->where(['status'=>1]);
 
         // add conditions that should always apply here
 

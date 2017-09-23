@@ -1,27 +1,29 @@
 <?php
 namespace backend\models;
 
+use Yii;
 use yii\base\Model;
+use \common\models\mysql\Banner;
 
 /**
-* author zhoushuo
+* author zhoushuo <z_s106@126.com>
 */
 class BannerForm extends Model
 {
 	
-	public $file;
+	public $file = '';
 	public $name;
-	public $files;
-	public $url;
-	public $sort;
+	public $info = '';
+	public $files = '';
+	public $sort = 0;
 
-	public function fules()
+	public function rules()
 	{
 	    return [
 		    // [['file','files'], 'required'],
-	    	['name','string','max' => 50],
-	        [['file', 'files'], 'safe'],
-	        [['file'], 'string', 'max' => 255],
+	    	// ['name','string','max' => 50],
+	        // [['file', 'files'], 'safe'],
+	        [['file','info'], 'string', 'max' => 255],
 	        [['sort'], 'number'],
 	    ]; 
 	}
@@ -29,7 +31,9 @@ class BannerForm extends Model
 	public function save()
 	{
 		$model = new Banner();
-		$model->url = $this->url;
+		$model->url = Yii::$app->params['domain'].$this->file;
+		$model->attachment = Yii::$app->params['imageUploadRelativePath'].$this->file;
+		$model->info = $this->info;
 		$model->sort = $this->sort;
 		return $model->save();
 	}

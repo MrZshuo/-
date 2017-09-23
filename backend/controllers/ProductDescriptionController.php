@@ -39,9 +39,15 @@ class ProductDescriptionController extends MyController
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
                     'imageUrlPrefix' => 'http://images.yii.com',
-                    'imageRoot' => '../../images',
-                    'imagePathFormat' => '/uploads/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+                    'imageRoot' => '../../uploads',
+                    'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
                     "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
+
+                    'videoPathFormat' => '/video/{yyyy}{mm}{dd}/{time}{rand:6}',
+                    'videoUrlPrefix' => 'http://images.yii.com',
+                    'videoRoot' => '../../uploads',
+                    'videoAllowFiles' => ['.flv','.swf','.mkv','.avi','.rm','.rmvb','.wmv','.mp4','.wav','.mid'],
+                    // 'videoMaxSize' => 51200000,
                 ],
             ],
         ];
@@ -89,9 +95,9 @@ class ProductDescriptionController extends MyController
     {
         $model = new ProductDescription();
         $model->product_id = intval($id);
-        $langlist = Language::find()->select(['name','id'])->where(['status'=>1])->indexBy('id')->column();
+        $langlist = Language::getLanguageMap();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+            return $this->redirect(['create','id'=>$id]);
         } else {
             return $this->render('create', [
                 'model' => $model,

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 
     <?php $form = ActiveForm::begin();?>
     	<?=$form->field($model,'info')->textarea(['row'=>10])?>
-    	<?=$form->field($model,'sort')->textInput()?>
+    	<?=$form->field($model,'sort')->input('number')?>
     	
     	<div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '上传') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

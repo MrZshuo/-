@@ -16,11 +16,6 @@ use common\models\mysql\Nav;
 
     <?= $form->field($model, 'language_id')->dropDownList(Language::getLanguageMap(),[
             'prompt' => '--请选择语言--',
-/*            'onchange' => '
-                $.post("'.Url::to(['article/nav']).'?language_id="+$(this).val(),function(data){
-                    $("#article-nav_id").html("<option value=>请选择分类</option>");
-                    $("#article-nav_id").html(date);
-                });',*/
         ]) ?>
 
     <?= $form->field($model, 'nav_id')->dropDownList(Nav::getNavMap($model->language_id),[
@@ -31,13 +26,19 @@ use common\models\mysql\Nav;
 
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image_url')->textInput(['maxlength' => true]) ?>
+    <!-- <?= $form->field($model, 'image_url')->textInput(['maxlength' => true]) ?> -->
+<!--     <?=$form->field($model,'image_url')->widget('manks\FileInput',[
+        'clientOptions' => [
+
+            'server' => Url::to('article/upload'),
+        ],
+    ])?> -->
 
     <?= $form->field($model, 'info')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sort')->textInput() ?>
+    <?= $form->field($model, 'sort')->input('number') ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'status')->input('number') ?>
 
     <?= $form->field($model,'content')->widget('kucha\ueditor\UEditor',[
          // 'lang' =>'zh-cn', //英文为 en
