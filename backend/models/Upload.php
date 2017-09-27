@@ -12,7 +12,7 @@ use yii\helpers\FileHelper;
 class Upload extends Model
 {
 	public $file;
-
+    public $type;   //上传文件类型(1.图片 2.视频)
 	private $_appendRules;
 
 	public function init()
@@ -40,7 +40,16 @@ class Upload extends Model
         $relativePath = $successPath = '';
         if ($this->validate()) {
             $dirPath = date('Ymd').'/';
-            $successPath = Yii::$app->params['imageUploadSuccessPath'].$dirPath;
+            if(strpos($this->file->type, 'image') === 0)
+            {
+                $successPath = Yii::$app->params['imageUploadSuccessPath'].$dirPath;
+                $this->type = 'image';
+            }
+            else if(strpos($this->file->type, 'video') === 0)
+            {
+                $successPath = Yii::$app->params['videoUploadSuccessPath'].$dirPath;
+                $this->type = 'video';
+            }
             $relativePath = Yii::$app->params['imageUploadRelativePath'].$successPath;
             $fileName = $this->file->baseName . '.' . $this->file->extension;
             $filePath = $relativePath . $fileName;
@@ -54,7 +63,8 @@ class Upload extends Model
             return [
                 'code' => 0,
                 'url' => Yii::$app->params['domain'] . $successPath. $fileName,
-                'attachment' => $successPath. $fileName
+                'attachment' => $successPath. $fileName,
+                'type' => $this->type
             ];
         } else {
             $errors = $this->errors;

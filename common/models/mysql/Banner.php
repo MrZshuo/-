@@ -20,7 +20,7 @@ class Banner extends ActiveRecord
     {
         return [
             ['mime','string'],
-            [['url','attachment','info'],'string','max'=>255],
+            [['url','info'],'string','max'=>255],
             [['width','height'],'number'],
             ['sort','number'],
         ];
@@ -30,10 +30,9 @@ class Banner extends ActiveRecord
     {
         return [
             'id' => Yii::t('app','ID'),
-            'name' => Yii::t('app','图片名'),
-            'info' => Yii::t('app','图片描述'),
-            'url' => Yii::t('app','图片网络路径'),
-            'attachment' => Yii::t('app','图片相对路径'),
+            'name' => Yii::t('app','文片名'),
+            'info' => Yii::t('app','文件描述'),
+            'url' => Yii::t('app','文件相对路径'),
             'width' => Yii::t('app','图片宽'),
             'height' => Yii::t('app','图片高'),
             'sort' => Yii::t('app','排序'),

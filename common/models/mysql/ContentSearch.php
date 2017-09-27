@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace common\models\mysql;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\mysql\Nav;
+use common\models\mysql\Content;
 
 /**
- * NavSearch represents the model behind the search form about `common\models\mysql\Nav`.
+ * ContentSearch represents the model behind the search form about `common\models\mysql\Content`.
  */
-class NavSearch extends Nav
+class ContentSearch extends Content
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class NavSearch extends Nav
     public function rules()
     {
         return [
-            [['id', 'sort'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'nav_id', 'status'], 'integer'],
+            [['content_url', 'type', 'create_at', 'update_at', 'author'], 'safe'],
         ];
     }
 
@@ -41,18 +41,15 @@ class NavSearch extends Nav
      */
     public function search($params)
     {
-        $query = Nav::find()->where(['status'=>1]);
+        $query = Content::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
+            'pagination' =>[
                 'pageSize' => 15,
             ],
-            'sort' => [
-                'defaultOrder' => ['sort' => SORT_ASC],
-            ]
         ]);
 
         $this->load($params);
@@ -66,10 +63,15 @@ class NavSearch extends Nav
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'sort' => $this->sort,
+            'nav_id' => $this->nav_id,
+            'create_at' => $this->create_at,
+            'update_at' => $this->update_at,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'content_url', $this->content_url])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'author', $this->author]);
 
         return $dataProvider;
     }

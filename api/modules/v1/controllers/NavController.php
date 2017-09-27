@@ -33,8 +33,8 @@ class NavController extends ActiveController
 	{
 		return [
 			'code'=> 200,
-			'nav' => $this->getNav($language),
-			'banner' => $this->getBanner(),
+			'nav' => $this->getNav($language = 'en'),
+			// 'banner' => $this->getBanner(),
 		];
 
 	}
@@ -44,13 +44,22 @@ class NavController extends ActiveController
 	*/
 	public function getNav($language)
 	{
-		$data = Nav::find()->select(['id','name','sort'])->where(['language_id' => $language])->asArray()->all();
+		// $data = Nav::find()->select(['n.id','n.name','p.name as pname'])->from('nav AS n')->leftJoin('nav AS p','n.pid=p.id')->orderBy('n.sort ASC')->asArray()->all();
+		$data = Nav::find()->select(['id','name','pid'])->orderBy('sort ASC')->asArray()->all();
+		foreach ($data as $key => $value) {
+			
+			foreach ($value as $k => $v) {
+
+			}
+		}
+		var_dump($data);exit();
 		return $data;
 	}
 
 	public function getBanner()
 	{
 		$data = Banner::find()->select(['id','url','sort','info'])->asArray()->all();
+
 		return $data;
 	}
 }

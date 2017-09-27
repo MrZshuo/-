@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'name',
+            'short',
             [
                 'attribute' => 'status',
                 'label' => '状态',

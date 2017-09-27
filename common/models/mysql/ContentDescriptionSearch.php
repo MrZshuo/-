@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace common\models\mysql;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\mysql\Nav;
+use common\models\mysql\ContentDescription;
 
 /**
- * NavSearch represents the model behind the search form about `common\models\mysql\Nav`.
+ * ContentDescriptionSearch represents the model behind the search form about `common\models\mysql\ContentDescription`.
  */
-class NavSearch extends Nav
+class ContentDescriptionSearch extends ContentDescription
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class NavSearch extends Nav
     public function rules()
     {
         return [
-            [['id', 'sort'], 'integer'],
-            [['name'], 'safe'],
+            [['content_id', 'language_id', 'status'], 'integer'],
+            [['content_title', 'content_info', 'content'], 'safe'],
         ];
     }
 
@@ -41,18 +41,12 @@ class NavSearch extends Nav
      */
     public function search($params)
     {
-        $query = Nav::find()->where(['status'=>1]);
+        $query = ContentDescription::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 15,
-            ],
-            'sort' => [
-                'defaultOrder' => ['sort' => SORT_ASC],
-            ]
         ]);
 
         $this->load($params);
@@ -65,11 +59,14 @@ class NavSearch extends Nav
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'sort' => $this->sort,
+            'content_id' => $this->content_id,
+            'language_id' => $this->language_id,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'content_title', $this->content_title])
+            ->andFilterWhere(['like', 'content_info', $this->content_info])
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

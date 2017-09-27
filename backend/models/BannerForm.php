@@ -28,11 +28,11 @@ class BannerForm extends Model
 	    ]; 
 	}
 
-	public function save()
+	public function save($type)
 	{
 		$model = new Banner();
-		$model->url = Yii::$app->params['domain'].$this->file;
-		$model->attachment = Yii::$app->params['imageUploadRelativePath'].$this->file;
+		$model->url = $this->file;
+		$model->mime = $type;
 		$model->info = $this->info;
 		$model->sort = $this->sort;
 		return $model->save();

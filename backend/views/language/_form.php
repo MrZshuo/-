@@ -14,6 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'short')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'status')->dropDownList(['0'=>'不支持','1'=>'支持']) ?>
 
 

@@ -35,18 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['width'=>'80','height'=>'80']
            ],
         'value' => function ($model) { 
-            return $model->url; 
+            return Yii::$app->params['domain'].$model->url; 
             }
         ],
         [
-         'label'=>'图片简介',
+         'attribute' => 'info',
          'value' => function($model)
          {
             return mb_strlen($model->info)>20 ? mb_substr($model->info, 0,20).'...' : $model->info;
          }
         ],
         'url',
-        'attachment',
         'width',
         'height',
         'sort',

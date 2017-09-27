@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\mysql\Nav;
+use common\models\mysql\NavShowname;
 
 /**
- * NavSearch represents the model behind the search form about `common\models\mysql\Nav`.
+ * NavShownameSearch represents the model behind the search form about `common\models\mysql\NavShowname`.
  */
-class NavSearch extends Nav
+class NavShownameSearch extends NavShowname
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class NavSearch extends Nav
     public function rules()
     {
         return [
-            [['id', 'sort'], 'integer'],
-            [['name'], 'safe'],
+            [['nav_id', 'language_id'], 'integer'],
+            [['nav_name'], 'safe'],
         ];
     }
 
@@ -41,18 +41,12 @@ class NavSearch extends Nav
      */
     public function search($params)
     {
-        $query = Nav::find()->where(['status'=>1]);
+        $query = NavShowname::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 15,
-            ],
-            'sort' => [
-                'defaultOrder' => ['sort' => SORT_ASC],
-            ]
         ]);
 
         $this->load($params);
@@ -65,11 +59,11 @@ class NavSearch extends Nav
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'sort' => $this->sort,
+            'nav_id' => $this->nav_id,
+            'language_id' => $this->language_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'nav_name', $this->nav_name]);
 
         return $dataProvider;
     }

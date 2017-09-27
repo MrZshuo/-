@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use common\models\mysql\Article;
-use common\models\mysql\ArticalSearch;
+use common\models\mysql\ContentDescription;
+use common\models\mysql\Content;
+use common\models\mysql\ContentDescriptionSearch;
 use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * ContentDescriptionController implements the CRUD actions for ContentDescription model.
  */
-class ArticleController extends MyController
+class ContentDescriptionController extends MyController
 {
     /**
      * @inheritdoc
@@ -29,7 +29,7 @@ class ArticleController extends MyController
             ],
         ];
     }
-
+    //配置Ueditort图片及视频上传
     public function actions()
     {
         return [
@@ -52,12 +52,12 @@ class ArticleController extends MyController
     }
 
     /**
-     * Lists all Article models.
+     * Lists all ContentDescription models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ArticalSearch();
+        $searchModel = new ContentDescriptionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -67,7 +67,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Displays a single Article model.
+     * Displays a single ContentDescription model.
      * @param integer $id
      * @return mixed
      */
@@ -79,13 +79,13 @@ class ArticleController extends MyController
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new ContentDescription model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Article();
+        $model = new ContentDescription();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -97,7 +97,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Updates an existing Article model.
+     * Updates an existing ContentDescription model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -116,7 +116,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Deletes an existing Article model.
+     * Deletes an existing ContentDescription model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -129,39 +129,28 @@ class ArticleController extends MyController
     }
 
     /**
-     * Finds the Article model based on its primary key value.
+     * Finds the ContentDescription model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Article the loaded model
+     * @return ContentDescription the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = ContentDescription::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    //语言 导航两级联动
-    public function actionNav($language_id)
+
+    public function actionContent($nav_id)
     {
-        $data = \common\models\mysql\Nav::getNavMap($language_id);
         $str = '';
+        $data = Content::find()->select(['content_title','id'])->where(['nav_id' => $nav_id,'status'=>1])->all();
         foreach ($data as $key => $value) {
-            $str .= '<option value='.$key.'>'.$value.'</option>';
+            $str .= '<option value="'.$value->id.'">'.$value->content_title.'</option>';
         }
         return $str;
-    }
-
-    public function upload()
-    {
-        Yii::$app->response->format = Response::JSON_FORMAT;
-        $model = new Upload();
-        $info = $model->upImage();
-        if($info && is_array($info))
-        {
-            
-        }
     }
 }

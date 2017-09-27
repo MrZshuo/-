@@ -19,8 +19,9 @@ class Language extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['name','status'],'required'],
-			['name','string','max'=>255]
+			[['name','status','short'],'required'],
+			['name','string','max'=>255],
+			['short','string','max'=>5],
 		];
 	}
 
@@ -29,6 +30,7 @@ class Language extends ActiveRecord
 		return [
 			'id' => Yii::t('app','ID'),
 			'name' => Yii::t('app','语言'),
+			'short' => Yii::t('app','简写'),
 			'status' => Yii::t('app','状态'),
 		];
 	}

@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use common\models\mysql\Article;
-use common\models\mysql\ArticalSearch;
+use common\models\mysql\Content;
+use common\models\mysql\ContentSearch;
 use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * ContentController implements the CRUD actions for Content model.
  */
-class ArticleController extends MyController
+class ContentController extends MyController
 {
     /**
      * @inheritdoc
@@ -30,34 +29,13 @@ class ArticleController extends MyController
         ];
     }
 
-    public function actions()
-    {
-        return [
-            'upload' => [
-                'class' => 'kucha\ueditor\UEditorAction',
-                'config' => [
-                    'imageUrlPrefix' => 'http://images.yii.com',
-                    'imageRoot' => '../../uploads',
-                    'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
-                    "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
-
-                    'videoPathFormat' => '/video/{yyyy}{mm}{dd}/{time}{rand:6}',
-                    'videoUrlPrefix' => 'http://images.yii.com',
-                    'videoRoot' => '../../uploads',
-                    'videoAllowFiles' => ['.flv','.swf','.mkv','.avi','.rm','.rmvb','.wmv','.mp4','.wav','.mid'],
-                    // 'videoMaxSize' => 51200000,
-                ],
-            ],
-        ];
-    }
-
     /**
-     * Lists all Article models.
+     * Lists all Content models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ArticalSearch();
+        $searchModel = new ContentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -67,7 +45,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Displays a single Article model.
+     * Displays a single Content model.
      * @param integer $id
      * @return mixed
      */
@@ -79,14 +57,15 @@ class ArticleController extends MyController
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new Content model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Article();
-
+        $model = new Content();
+        $model->type = 'image';
+        $model->status = 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -97,7 +76,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Updates an existing Article model.
+     * Updates an existing Content model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -116,7 +95,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Deletes an existing Article model.
+     * Deletes an existing Content model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -129,39 +108,18 @@ class ArticleController extends MyController
     }
 
     /**
-     * Finds the Article model based on its primary key value.
+     * Finds the Content model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Article the loaded model
+     * @return Content the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = Content::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-    //语言 导航两级联动
-    public function actionNav($language_id)
-    {
-        $data = \common\models\mysql\Nav::getNavMap($language_id);
-        $str = '';
-        foreach ($data as $key => $value) {
-            $str .= '<option value='.$key.'>'.$value.'</option>';
-        }
-        return $str;
-    }
-
-    public function upload()
-    {
-        Yii::$app->response->format = Response::JSON_FORMAT;
-        $model = new Upload();
-        $info = $model->upImage();
-        if($info && is_array($info))
-        {
-            
         }
     }
 }

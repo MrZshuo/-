@@ -122,4 +122,10 @@ class NavController extends MyController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionTranslate()
+    {
+        $model = Nav::find()->select(['id','name'])->all();
+        return $this->render('translate',['model' => $model]);
+    }
 }

@@ -46,7 +46,7 @@ class Nav extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'pid' => Yii::t('app','父导航'),
-            'language_id' => Yii::t('app', '语言'),
+            // 'language_id' => Yii::t('app', '语言'),
             'name' => Yii::t('app', '名称'),
             'sort' => Yii::t('app', '排序'),
         ];
@@ -56,12 +56,12 @@ class Nav extends \yii\db\ActiveRecord
     *获取语言name
     *
     */
-    public function getLanguageName()
-    {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
-    }
+    // public function getLanguageName()
+    // {
+    //     return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
+    // }
     //获取所有导航
-    public static function getNavMap($language_id)
+    public static function getNavMap()
     {
        return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('sort ASC')->indexBy('id')->column();
     }

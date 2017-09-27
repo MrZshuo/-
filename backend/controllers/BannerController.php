@@ -44,8 +44,9 @@ class BannerController extends MyController
 	public function actionDelete($id)
 	{
 		$model = $this->findModel($id);
-		if(file_exists($model->attachment))
-			unlink($model->attachment);
+		$attachment = Yii::$app->params['imageUploadRelativePath'].$model->url;
+		if(file_exists($attachment))
+			unlink($attachment);
 		$model->delete();
 		return $this->redirect(['index']);
 	}
@@ -61,7 +62,7 @@ class BannerController extends MyController
 	public function actionCreate()
 	{
 		$model = new BannerForm();
-		if($model->load(Yii::$app->request->post()) && $model->validate() && $model->save())
+		if($model->load(Yii::$app->request->post()) && $model->validate() && $model->save('image'))
 			$this->redirect('index');
 		else
 			return $this->render('create',['model' => $model]);
@@ -89,10 +90,9 @@ class BannerController extends MyController
         	return true;
         $model->sort = 0;
         $res = $this->imageSize($info['attachment']);
-        $model->attachment = $info['attachment'];
         $model->width = $res['width'];
         $model->height = $res['height'];
-        $model->mime = $res['mime'];
+        $model->mime = $info['type'];
         return $model->save();
         
     }
@@ -111,5 +111,13 @@ class BannerController extends MyController
 		return $res;
     }
 
-
+    public function actionVideo()
+    {
+    	$model = new BannerForm();
+    	// $info = $model->info('video');
+    	if($model->load(Yii::$app->request->post()) && $model->validate() && $model->save('video'))
+    		return $this->redirect('index');
+    	else
+    		return $this->render('video',['model'=>$model]);
+    }
 }

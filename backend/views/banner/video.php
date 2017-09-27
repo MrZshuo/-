@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	'options' => ['enctype' => 'multipart/form-data'],
 ])?>
 <?=$form->field($model,'info')->label('标题')->textInput()?>
-<?=$form->field($model,'file')->label('首页Banner')->widget('manks\FileInput',[])?>
+<?=$form->field($model,'file')->label('视频')->widget('manks\FileInput',[])?>
 <!-- <?php 
 echo $form->field($model, 'files')->widget('manks\FileInput', [
     'clientOptions' => [

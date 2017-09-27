@@ -64,6 +64,12 @@ return [
                     //不开启复数形式
                     'pluralize' => false,
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/product'],
+                    //不开启复数形式
+                    'pluralize' => false,
+                ],
             ],
         ],
         

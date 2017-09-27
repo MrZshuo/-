@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\helpers\Url;
-use common\models\mysql\Article;
-use common\models\mysql\ArticalSearch;
+use common\models\mysql\NavShowname;
+use backend\models\NavShownameSearch;
 use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * NavShownameController implements the CRUD actions for NavShowname model.
  */
-class ArticleController extends MyController
+class NavShownameController extends MyController
 {
     /**
      * @inheritdoc
@@ -30,34 +29,13 @@ class ArticleController extends MyController
         ];
     }
 
-    public function actions()
-    {
-        return [
-            'upload' => [
-                'class' => 'kucha\ueditor\UEditorAction',
-                'config' => [
-                    'imageUrlPrefix' => 'http://images.yii.com',
-                    'imageRoot' => '../../uploads',
-                    'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
-                    "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
-
-                    'videoPathFormat' => '/video/{yyyy}{mm}{dd}/{time}{rand:6}',
-                    'videoUrlPrefix' => 'http://images.yii.com',
-                    'videoRoot' => '../../uploads',
-                    'videoAllowFiles' => ['.flv','.swf','.mkv','.avi','.rm','.rmvb','.wmv','.mp4','.wav','.mid'],
-                    // 'videoMaxSize' => 51200000,
-                ],
-            ],
-        ];
-    }
-
     /**
-     * Lists all Article models.
+     * Lists all NavShowname models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ArticalSearch();
+        $searchModel = new NavShownameSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -67,7 +45,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Displays a single Article model.
+     * Displays a single NavShowname model.
      * @param integer $id
      * @return mixed
      */
@@ -79,16 +57,16 @@ class ArticleController extends MyController
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new NavShowname model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Article();
+        $model = new NavShowname();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('create');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -97,7 +75,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Updates an existing Article model.
+     * Updates an existing NavShowname model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,7 +85,7 @@ class ArticleController extends MyController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->nav_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -116,7 +94,7 @@ class ArticleController extends MyController
     }
 
     /**
-     * Deletes an existing Article model.
+     * Deletes an existing NavShowname model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -129,39 +107,18 @@ class ArticleController extends MyController
     }
 
     /**
-     * Finds the Article model based on its primary key value.
+     * Finds the NavShowname model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Article the loaded model
+     * @return NavShowname the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = NavShowname::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-    //语言 导航两级联动
-    public function actionNav($language_id)
-    {
-        $data = \common\models\mysql\Nav::getNavMap($language_id);
-        $str = '';
-        foreach ($data as $key => $value) {
-            $str .= '<option value='.$key.'>'.$value.'</option>';
-        }
-        return $str;
-    }
-
-    public function upload()
-    {
-        Yii::$app->response->format = Response::JSON_FORMAT;
-        $model = new Upload();
-        $info = $model->upImage();
-        if($info && is_array($info))
-        {
-            
         }
     }
 }
