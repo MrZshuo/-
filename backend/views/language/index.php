@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
             // 'id',
             'name',
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '不支持';
                 }
             ],
-            ['class' => 'yii\grid\ActionColumn','template' => '{update} {delete}'],
+            ['class' => 'yii\grid\ActionColumn','template' => '{update} {delete}','header'=>'操作'],
         ],
     ]); ?>
 <?php Pjax::end(); ?>

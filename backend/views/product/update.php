@@ -26,18 +26,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', '修改');
     'method'=>'post',
     'options' => ['enctype' => 'multipart/form-data'],
 ])?>
-<!-- <?=$form->field($file,'name')->label('图片名')->textInput()?> -->
-<?=$form->field($file, 'file')->label('上传产品图')->widget('manks\FileInput', [
-    'clientOptions' => [
-        'pick' => [
-            'multiple' => true,
-        ],
-        'server' => Url::to(['upload','id'=>$model->id]),
-        // 'accept' => [
-        //     'extensions' => 'png',
-        // ],
-    ],
-]); ?>
+
 
 <?php ActiveForm::end(); ?>
 </div>

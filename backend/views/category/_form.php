@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use common\models\mysql\Language;
+use common\models\mysql\Category;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\Category */
 /* @var $form yii\widgets\ActiveForm */
@@ -15,11 +16,7 @@ use common\models\mysql\Language;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'language_id')->dropDownList(
-    	Language::getLanguageMap()
-    ) ?>
-
-    <?= $form->field($model, 'show_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model,'pid')->dropDownList(Category::getParentCategoryMap(),['prompt'=>'一级分类'])?>
 
     <?= $form->field($model, 'sort')->input('number') ?>
 

@@ -96,13 +96,12 @@ class ProductController extends MyController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $file = new BannerForm();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'file' => $file
             ]);
         }
     }

@@ -19,7 +19,7 @@ class ProductPropertySearch extends ProductProperty
     {
         return [
             [['language_id'], 'integer'],
-            [['property_name', 'property_value','category_name'], 'safe'],
+            [['property_name', 'property_value','product_id'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class ProductPropertySearch extends ProductProperty
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'category_name' => $this->category_name,
+            'product_id' => $this->product_id,
             'language_id' => $this->language_id,
         ]);
 

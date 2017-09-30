@@ -61,12 +61,12 @@ class ProductPropertyController extends MyController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new ProductProperty();
-
+        $model->product_id = $id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['create']);
+            return $this->redirect(['create','id'=>$id]);
         } else {
             return $this->render('create', [
                 'model' => $model,

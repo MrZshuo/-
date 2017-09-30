@@ -23,6 +23,16 @@ return [
         'response' => [
             'format'=>'json',
         ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0,
+        ],
+        'cache' => [
+            'class' => 'yii\redis\Cache',
+            'keyPrefix' => 'sinoapi',
+        ],
         'request' => [
             // 'csrfParam' => '_csrf-api',
             'class' => '\yii\web\Request',
@@ -34,7 +44,7 @@ return [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -60,7 +70,7 @@ return [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/nav'],
+                    'controller' => ['v1/nav','v1/language','v1/banner'],
                     //不开启复数形式
                     'pluralize' => false,
                 ],

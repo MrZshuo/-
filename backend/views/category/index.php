@@ -29,21 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'id',
             [
                 'attribute' => 'name',
-                'filter' => Category::getCategoryMap(),
+                // 'filter' => Category::getCategoryMap(),
             ],
             [
-                'attribute' => 'language_id',
+                'attribute' => 'pid',
                 'value' => function($model)
                 {
-                    return $model->languageName->name;
+                    if($model->pid == 0)
+                        return '一级分类';
+                    else
+                    {
+                        $res = Category::findOne($model->pid);
+                        return $res->name;
+                    }
                 },
-                'filter' => Language::getLanguageMap(),
+                'filter' => Category::getParentCategoryMap(),
             ],
-            'show_name',
             'sort',
 
             ['class' => 'yii\grid\ActionColumn','header'=>'操作',
-                'template' => '{update} {delete} {showname}',
+                'template' => '{update} {delete}',
                 'buttons' => [
                     'showname' => function($url,$model,$key)
                     {

@@ -31,6 +31,10 @@ use common\models\mysql\Content;
 
     <?= $form->field($model,'content')->widget('kucha\ueditor\UEditor',[
          // 'lang' =>'zh-cn', //英文为 en
+        'clientOptions' => [
+            'imageCompressBorder' => 700,
+
+        ],
     ])?>
 
 
@@ -44,6 +48,7 @@ use common\models\mysql\Content;
 
 <?php
 $js = <<<EOF
+    var nav_id = $("#list-id")
     $("#list-id").change(function(){
         var nav_id = $(this).val();
         if(nav_id>0){

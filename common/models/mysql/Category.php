@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "{{%category}}".
  *
  * @property integer $id
+ * @property integer $pid
  * @property string $name
  * @property integer $pid
  * @property integer $sort
@@ -28,9 +29,9 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['language_id', 'sort'], 'integer'],
-            [['name','show_name'], 'string', 'max' => 50],
+            ['name', 'required'],
+            [['sort','pid'], 'integer'],
+            ['name', 'string', 'max' => 50],
         ];
     }
 
@@ -42,21 +43,19 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', '产品类名'),
-            'show_name' => Yii::t('app', '前台显示名'),
-            'language_id' => Yii::t('app', '语言'),
+            'pid' => Yii::t('app', '父类名'),
             'sort' => Yii::t('app', '排序'),
         ];
     }
     //获取所有的属性列表
     public static function getCategoryMap()
     {
-        return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('id ASC')->indexBy('name')->groupBy(['name'])->column();
+        return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('sort ASC')->indexBy('id')->column();
     }
 
-    //获取语言name
-    public function getLanguageName()
+    public static function getParentCategoryMap()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select(['name']);
+        return self::find()->select(['name','id'])->where(['pid'=>0,'status'=>1])->orderBy('sort ASC')->indexBy('id')->column();
     }
 
 }

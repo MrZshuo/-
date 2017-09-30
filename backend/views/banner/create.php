@@ -18,19 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	'options' => ['enctype' => 'multipart/form-data'],
 ])?>
 <?=$form->field($model,'info')->label('标题')->textInput()?>
+
 <?=$form->field($model,'file')->label('首页Banner')->widget('manks\FileInput',[])?>
-<!-- <?php 
-echo $form->field($model, 'files')->widget('manks\FileInput', [
-    'clientOptions' => [
-        'pick' => [
-            'multiple' => true,
-        ],
-        // 'server' => Url::to('upload'),
-        // 'accept' => [
-        //     'extensions' => 'png',
-        // ],
-    ],
-]); ?> -->
+
 <?=$form->field($model,'sort')->label('排序')->input('number')?>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', '创 建'), ['class' => 'btn btn-success']) ?>

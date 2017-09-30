@@ -67,7 +67,7 @@ class ContentController extends MyController
         $model->type = 'image';
         $model->status = 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('create');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -86,7 +86,7 @@ class ContentController extends MyController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,

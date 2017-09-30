@@ -19,13 +19,15 @@ use common\models\mysql\Category;
     	Category::getCategoryMap()
     )?>
 
-   	<?=$form->field($model,'image_url')->widget('manks\FileInput',[])?>
+<?php 
+    echo $form->field($model, 'image_url')->widget('manks\FileInput', [
+    'clientOptions' => [
+        'pick' => [
+            'multiple' => true,
+        ],
+    ],
+]); ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'freight')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'size')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '新增') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

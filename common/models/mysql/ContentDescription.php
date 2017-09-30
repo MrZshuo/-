@@ -46,7 +46,7 @@ class ContentDescription extends \yii\db\ActiveRecord
         return [
             'content_id' => Yii::t('app', 'Content ID'),
             'language_id' => Yii::t('app', 'Language ID'),
-            'content_title' => Yii::t('app', '标题'),
+            'content_title' => Yii::t('app', '标题前端显示名'),
             'content_info' => Yii::t('app', '简介'),
             'content' => Yii::t('app', '内容详情'),
             'status' => Yii::t('app', '0删除'),
@@ -56,7 +56,7 @@ class ContentDescription extends \yii\db\ActiveRecord
     //获取内容名
     public function getContentName()
     {
-        return $this->hasOne(Content::className(),['id'=>'content_id'])->select('content_title');
+        return $this->hasOne(Content::className(),['id'=>'content_id']);
     }
 
     //获取语言

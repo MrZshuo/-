@@ -29,7 +29,7 @@ class ContentDescriptionController extends MyController
             ],
         ];
     }
-    //配置Ueditort图片及视频上传
+    //配置Ueditor图片及视频上传
     public function actions()
     {
         return [
@@ -40,6 +40,7 @@ class ContentDescriptionController extends MyController
                     'imageRoot' => '../../uploads',
                     'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
                     "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
+                    'image'
 
                     'videoPathFormat' => '/video/{yyyy}{mm}{dd}/{time}{rand:6}',
                     'videoUrlPrefix' => 'http://images.yii.com',

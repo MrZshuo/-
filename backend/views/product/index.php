@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\mysql\ProductQuery */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,7 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
 
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?php Pjax::begin(); ?>    <?= GridView::widget([
@@ -32,29 +32,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'value' => function($model)
                 {
-                    return Yii::$app->params['domain'].$model->image_url;
+                    $url = explode(',', $model->image_url);
+                    return Yii::$app->params['domain'].$url[0];
                 },
             ],
-            'price',
-            'freight',
+            [
+                'attribute' => 'category_id',
+                'label' => '产品类别',
+                'value' => function($model)
+                {
+                   return $model->categoryName->name;
+                },
+            ],
             'create_at',
             'update_at',
-            'size',
             'admin_name',
-/*            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{create}',
-                'buttons' => [
-                    'create' => function ($url, $model, $key) {
-                        return Html::a('添加详情', ['/product-description/create', 'id' => $key], ['class'=>'btn btn-sm btn-primary']);
-                    }
-                ],
-                'options' => [
-                    'width' => 5
-                ]
-            ],*/
-
-            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{view} {update} {delete}   {product-description}',
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{update} {delete}   {product-description} {product-property}',
                 'buttons' => [
                     'product-description' => function($url,$model,$key)
                     {
@@ -64,6 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         ];
                         return Html::a('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',Url::to(['/product-description/create','id'=>$model->id]),$options);
                     },
+                    'product-property' => function($url,$model,$key)
+                    {
+                        $options = [
+                            'title' => Yii::t('app','添加属性'),
+                            'aria-label' => Yii::t('app','添加属性'),
+                        ];
+                        return Html::a('<i class="fa fa-cubes" aria-hidden="true"></i>',Url::to(['/product-property/create','id'=>$model->id]),$options);
+                    }
                 ],
             ],
         ],

@@ -64,7 +64,8 @@ class CategoryController extends MyController
     public function actionCreate()
     {
         $model = new Category();
-
+        $model->pid = 0; //默认为一级分类
+        $model->sort = 99; //默认排序
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('create');
         } else {

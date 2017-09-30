@@ -31,10 +31,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['price', 'freight'], 'string','max'=>20],
-            [['create_at', 'update_at','admin_name'], 'safe'],
-            [['name', 'size','image_url'], 'string', 'max' => 255],
+            ['name', 'required'],
+            ['image_url','safe'],
+            [['create_at', 'update_at','admin_name'], 'string'],
+            ['name', 'string', 'max' => 255],
         ];
     }
 
@@ -45,13 +45,10 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', '产品编号'),
+            'name' => Yii::t('app', '产品名'),
             'image_url' => Yii::t('app', '产品主图'),
-            'price' => Yii::t('app', '价格'),
-            'freight' => Yii::t('app', '运费'),
             'create_at' => Yii::t('app', '创建时间'),
             'update_at' => Yii::t('app', '更新时间'),
-            'size' => Yii::t('app', '尺寸'),
             'admin_name' => Yii::t('app', '编辑人'),
         ];
     }
@@ -69,6 +66,8 @@ class Product extends \yii\db\ActiveRecord
     {
         if(parent::beforeSave($insert))
         {
+            if(is_array($this->image_url) && $this->image_url)
+                $this->image_url = implode(',', $this->image_url);
             if($insert)
             { 
                 $this->create_at = $this->update_at = date("Y-m-d H:i:s");
@@ -76,10 +75,10 @@ class Product extends \yii\db\ActiveRecord
             }
             else
                 $this->update_at = date("Y-m-d H:i:s");
+
             if(!Yii::$app->user->isGuest)
                 $this->admin_name = Yii::$app->user->identity->username;
-            else
-                return false;
+
             return true;
         }
         else
@@ -90,4 +89,10 @@ class Product extends \yii\db\ActiveRecord
     {
         return self::find()->select(['name','id'])->indexBy('id')->where(['status'=>1])->column();
     }
+    //获取产品对应分类
+    public function getCategoryName()
+    {
+        return $this->hasOne(Category::className(),['id'=>'category_id']);
+    }
+
 }

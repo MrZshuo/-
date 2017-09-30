@@ -28,9 +28,9 @@ class ProductProperty extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_name', 'language_id'], 'required'],
-            [['language_id'], 'integer'],
-            [['category_name', 'property_name'], 'string', 'max' => 50],
+            [['product_id', 'language_id'], 'required'],
+            [['language_id','product_id'], 'integer'],
+            [[ 'property_name'], 'string', 'max' => 50],
             [['property_value'], 'string', 'max' => 255],
         ];
     }
@@ -41,16 +41,16 @@ class ProductProperty extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'category_name' => Yii::t('app', '产品类别'),
+            'product_id' => Yii::t('app', '产品ID'),
             'language_id' => Yii::t('app', '语言'),
             'property_name' => Yii::t('app', '属性名'),
             'property_value' => Yii::t('app', '属性值'),
         ];
     }
     //获取属性名
-    public function getCategoryName()
+    public function getProductName()
     {
-        return $this->hasOne(Category::className(),['name'=>'category_name'])->select(['name']);
+        return $this->hasOne(Product::className(),['id'=>'product_id']);
     }
     //获取语言名
     public function getLanguageName()

@@ -17,9 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'pid') ?>
 
-    <?= $form->field($model, 'languag_id') ?>
+    <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'sort') ?>
 

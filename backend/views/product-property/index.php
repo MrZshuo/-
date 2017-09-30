@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use common\models\mysql\Category;
 use common\models\mysql\Language;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ProductPropertySearch */
@@ -16,9 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', '添加属性'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -26,8 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn','header' => '序号'],
 
             [
-                'attribute' => 'category_name',
-                'filter' => Category::getCategoryMap(),
+                'attribute' => 'product_id',
+                'label' => '产品名',
+                'value' => function($model)
+                {
+                    return $model->productName->name;
+                },
+                // 'filter' => 
             ],
             [
                 'attribute' =>'language_id',

@@ -8,12 +8,13 @@ use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
 
 use common\models\mysql\Nav;
-use common\models\mysql\Banner;
+use common\models\mysql\Language;
 /**
 * author zhoushuo <z_s106@126.com>
 */
 class NavController extends ActiveController
 {
+	const NAV = 'nav_id_name';
 	
 	public $modelClass = 'common\models\mysql\Nav';
 
@@ -29,12 +30,16 @@ class NavController extends ActiveController
 		return $actions;
 	}
 
-	public function actionIndex($language)
+	public function actionIndex($lang='en')
 	{
+		if($lang != 'en')
+		{
+			$lang_id = Language::find()->select('id')->where(['status'=>1]);
+		}
 		return [
 			'code'=> 200,
+			'lang' => $lang,
 			'nav' => $this->getNav($language = 'en'),
-			// 'banner' => $this->getBanner(),
 		];
 
 	}
@@ -42,17 +47,27 @@ class NavController extends ActiveController
 	*@param $language 语言ID
 	*@return array 对应语言的导航 else error 
 	*/
-	public function getNav($language)
+	public function getNav($lang = 'en')
 	{
-		// $data = Nav::find()->select(['n.id','n.name','p.name as pname'])->from('nav AS n')->leftJoin('nav AS p','n.pid=p.id')->orderBy('n.sort ASC')->asArray()->all();
-		$data = Nav::find()->select(['id','name','pid'])->orderBy('sort ASC')->asArray()->all();
-		foreach ($data as $key => $value) {
-			
-			foreach ($value as $k => $v) {
-
+		if(Yii::$app->cache->exists(self::NAV))
+			$data = json_decode(Yii::$app->cache->get(self::NAV));
+		else
+		{
+			$data = Nav::find()->select(['id','name','pid'])->orderBy('sort ASC')->asArray()->all();
+			$res = [];
+			//显示二级子菜单
+			foreach ($data as $key => &$value) {
+				if($value['pid'] !== 0)
+				foreach ($data as $k => &$v) {  				
+					if($v['id'] === $value['pid'])
+					{
+						$v['child'][] = $value;
+						unset($data[$key]);
+					}
+				}
+			Yii::$app->cache->set(self::NAV,json_encode($data),60*60*2);
 			}
 		}
-		var_dump($data);exit();
 		return $data;
 	}
 
@@ -62,4 +77,5 @@ class NavController extends ActiveController
 
 		return $data;
 	}
+
 }

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use common\models\mysql\Category;
+use common\models\mysql\Product;
 use common\models\mysql\Language;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\ProductProperty */
@@ -14,8 +14,7 @@ use common\models\mysql\Language;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'category_name')->dropDownList(
-    	Category::getCategoryMap()
+    <?= $form->field($model, 'product_id')->textInput(['readonly'=>true]
     )?>
 
     <?= $form->field($model, 'language_id')->dropDownList(

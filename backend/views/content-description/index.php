@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '内容标题',
                 'value' => function($model)
                 {
-                    return $model->contentName->content_title;
+                    $data = $model->contentName->content_title;
+                    return mb_strlen($data) > 15 ? mb_substr($data, 0,15,'utf-8').'...' : $data;
                 },
             ],
             [
@@ -44,9 +45,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Language::getLanguageMap(),
             ],
-            'content_title',
-            'content_info',
-            'content:ntext',
+            [
+                'attribute' => 'content_title',
+                'value' => function($model)
+                {
+                    $data = $model->content_title;
+                    return mb_strlen($data) > 20 ? mb_substr($data, 0,20,'utf-8').'...' : $data;
+                }
+            ],
+            [
+                'attribute' => 'content_info',
+                'value' => function($model)
+                {
+                    $data = $model->content_info;
+                    return mb_strlen($data) > 20 ? mb_substr($data, 0,20,'utf-8').'...' : $model->content_info;
+                }
+            ],
+
+            // 'content:ntext',
             // 'status',
 
             ['class' => 'yii\grid\ActionColumn'],

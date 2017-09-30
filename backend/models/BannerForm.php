@@ -22,8 +22,8 @@ class BannerForm extends Model
 	    return [
 		    // [['file','files'], 'required'],
 	    	// ['name','string','max' => 50],
-	        // [['file', 'files'], 'safe'],
-	        [['file','info'], 'string', 'max' => 255],
+	        ['file', 'safe'],
+	        ['info', 'string', 'max' => 255],
 	        [['sort'], 'number'],
 	    ]; 
 	}
@@ -31,6 +31,8 @@ class BannerForm extends Model
 	public function save($type)
 	{
 		$model = new Banner();
+		if(is_array($this->file) && $this->file)
+			$this->file = implode(',', $this->file);
 		$model->url = $this->file;
 		$model->mime = $type;
 		$model->info = $this->info;

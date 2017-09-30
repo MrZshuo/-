@@ -32,11 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'price',
             // 'cost_price',
             'create_at',
             'update_at',
-            'size',
         ],
     ]) ?>
     <div class="">
