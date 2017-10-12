@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 use yii\widgets\ActiveForm;
 
@@ -11,7 +12,7 @@ use common\models\mysql\Language;
 $this->title = Yii::t('app', '修改详情: ', [
     'modelClass' => 'Content Description',
 ]) . $model->contentName->content_title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Content Descriptions'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', '内容详情'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 ?>
 <div class="content-description-update">
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 
     <?= $form->field($model, 'language_id')->label('语言')->dropDownList(Language::getLanguageMap()) ?>
 
-    <?= $form->field($model, 'content_title')->label('显示名称')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'show_title')->label('显示名称')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'content_info')->textInput(['maxlength' => true,'row' => 6]) ?>
 
@@ -36,7 +37,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '添加详情') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '添加详情') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app','返回'),Url::to('index'),['class' => 'btn btn-primary'])?>
     </div>
 
     <?php ActiveForm::end(); ?>

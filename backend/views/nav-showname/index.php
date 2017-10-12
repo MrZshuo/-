@@ -40,11 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '语言',
                 'value' => function($model)
                 {
-                    return $model->languageName->name;
+                    return $model->languageName->language_name;
                 },
                 'filter' => Language::getLanguageMap(),
             ],
-            'nav_name',
+            'show_name',
 
             ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{update}{delete}'],
         ],

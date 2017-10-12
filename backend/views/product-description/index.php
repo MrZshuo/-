@@ -14,9 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="product-description-index">
 
 
-    <p>
-        <!-- <?= Html::a(Yii::t('app', 'Create Product Description'), ['create'], ['class' => 'btn btn-success']) ?> -->
-    </p>
+ 
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
              'attribute' => 'language_id',
              'label' => '语言',
              'value' => function($model){
-                return $model->languageName->name;
+                return $model->languageName->language_name;
              },
-             'filter' => common\models\mysql\Language::find()->select(['name','id'])->indexBy('id')->column(),
+             'filter' => common\models\mysql\Language::find()->select(['language_name','id'])->indexBy('id')->column(),
             ],
             [
              'label' => '产品简介',

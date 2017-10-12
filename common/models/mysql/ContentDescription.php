@@ -33,7 +33,7 @@ class ContentDescription extends \yii\db\ActiveRecord
             [['content_id', 'language_id'], 'required'],
             [['content_id', 'language_id', 'status'], 'integer'],
             [['content'], 'string'],
-            [['content_title'], 'string', 'max' => 50],
+            [['show_title'], 'string', 'max' => 50],
             [['content_info'], 'string', 'max' => 255],
         ];
     }
@@ -44,9 +44,9 @@ class ContentDescription extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'content_id' => Yii::t('app', 'Content ID'),
-            'language_id' => Yii::t('app', 'Language ID'),
-            'content_title' => Yii::t('app', '标题前端显示名'),
+            'content_id' => Yii::t('app', '内容id'),
+            'language_id' => Yii::t('app', '语言'),
+            'show_title' => Yii::t('app', '标题前端显示名'),
             'content_info' => Yii::t('app', '简介'),
             'content' => Yii::t('app', '内容详情'),
             'status' => Yii::t('app', '0删除'),
@@ -62,7 +62,7 @@ class ContentDescription extends \yii\db\ActiveRecord
     //获取语言
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('language_name');
     }
 
     public function getContentMap()

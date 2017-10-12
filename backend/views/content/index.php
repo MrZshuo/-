@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
@@ -23,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
+            ['class' => 'yii\grid\SerialColumn','header' => '序号'],
+            // 'nav_name',
             [
                 'attribute' => 'nav_id',
                 'label' => '栏目',
@@ -34,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Nav::getNavMap(),
             ],
+            [
+                'attribute' => 'content_title',
+                'value' => function($model)
+                {
+                    return mb_strlen($model->content_title,'utf-8') > 20 ? mb_substr($model->content_title, 0, 20, 'utf-8').'...' : $model->content_title;
+                }
+            ],
             'content_url:url',
             'type',
             'create_at',
@@ -41,7 +49,17 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'author',
             // 'status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','header' => '操作','template' =>'{update} {delete}  {content-description}','buttons' => [
+                    'content-description' => function($url,$model,$key)
+                    {
+                        $options = [
+                            'title' => Yii::t('app','添加详情'),
+                            'aria-label' => Yii::t('app','添加详情'),
+                        ];
+                        return Html::a('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',Url::to(['/content-description/create','id'=>$model->id]),$options);
+                    }
+                ],
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

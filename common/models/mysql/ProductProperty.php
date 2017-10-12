@@ -55,6 +55,6 @@ class ProductProperty extends \yii\db\ActiveRecord
     //获取语言名
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select(['name']);
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select(['language_name']);
     }
 }

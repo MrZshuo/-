@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
             // 'id',
-            'name',
-            'short',
+            'language_name',
+            'language_short_name',
             [
                 'attribute' => 'status',
                 'label' => '状态',

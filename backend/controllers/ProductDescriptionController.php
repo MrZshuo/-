@@ -38,7 +38,7 @@ class ProductDescriptionController extends MyController
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
-                    'imageUrlPrefix' => 'http://images.yii.com',
+                    'imageUrlPrefix' => Yii::$app->params['domain'],
                     'imageRoot' => '../../uploads',
                     'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
                     "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],

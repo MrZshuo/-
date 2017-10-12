@@ -18,9 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', '添加详情'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -41,15 +39,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '语言名',
                 'value' => function($model)
                 {
-                    return $model->languageName->name;
+                    return $model->languageName->language_name;
                 },
                 'filter' => Language::getLanguageMap(),
             ],
             [
-                'attribute' => 'content_title',
+                'attribute' => 'show_title',
                 'value' => function($model)
                 {
-                    $data = $model->content_title;
+                    $data = $model->show_title;
                     return mb_strlen($data) > 20 ? mb_substr($data, 0,20,'utf-8').'...' : $data;
                 }
             ],

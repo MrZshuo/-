@@ -36,11 +36,11 @@ class ContentDescriptionController extends MyController
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
-                    'imageUrlPrefix' => 'http://images.yii.com',
+                    'imageUrlPrefix' => Yii::$app->params['domain'],
                     'imageRoot' => '../../uploads',
                     'imagePathFormat' => '/images/{yyyy}{mm}{dd}/{time}{rand:6}',
                     "imageAllowFiles" => [".png",".jpg",".jpeg",".gif",".bmp"],
-                    'image'
+                    // 'image'
 
                     'videoPathFormat' => '/video/{yyyy}{mm}{dd}/{time}{rand:6}',
                     'videoUrlPrefix' => 'http://images.yii.com',
@@ -84,12 +84,12 @@ class ContentDescriptionController extends MyController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new ContentDescription();
-
+        $model->content_id = $id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['create', 'id' => $id]);
         } else {
             return $this->render('create', [
                 'model' => $model,

@@ -69,7 +69,7 @@ class Article extends \yii\db\ActiveRecord
     //获取language name
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('language_name');
     }
 
     //获取nav name

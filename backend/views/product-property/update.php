@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 ?>
 <div class="product-property-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

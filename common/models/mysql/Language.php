@@ -19,9 +19,9 @@ class Language extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['name','status','short'],'required'],
-			['name','string','max'=>255],
-			['short','string','max'=>5],
+			[['language_name','status','language_short_name'],'required'],
+			['language_name','string','max'=>20],
+			['language_short_name','string','max'=>5],
 		];
 	}
 
@@ -29,8 +29,8 @@ class Language extends ActiveRecord
 	{
 		return [
 			'id' => Yii::t('app','ID'),
-			'name' => Yii::t('app','语言'),
-			'short' => Yii::t('app','简写'),
+			'language_name' => Yii::t('app','语言名称'),
+			'language_short_name' => Yii::t('app','简写'),
 			'status' => Yii::t('app','状态'),
 		];
 	}
@@ -44,6 +44,12 @@ class Language extends ActiveRecord
 //获取所有语言
 	public static function getLanguageMap()
 	{
-		return self::find()->select(['name','id'])->indexBy('id')->column();
+		return self::find()->select(['language_name','id'])->indexBy('id')->column();
+	}
+
+	public static function getIdByShortName($shortname)
+	{
+		$res = self::find()->select(['id','language_name'])->where(['language_short_name'=>$shortname,'status'=>1])->one();
+		return $res->id;
 	}
 }

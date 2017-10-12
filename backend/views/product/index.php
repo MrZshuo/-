@@ -23,7 +23,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn','header'=>'序号'],
 
             // 'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'value' => function($model)
+                {
+                    return mb_strlen($model->name) > 20 ? mb_substr($model->name, 0,20,'utf-8').'...' : $model->name;
+                }
+            ],
             [
                 'label' => '产品主图',
                 'format' => [

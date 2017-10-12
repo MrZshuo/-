@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'language_id') ?>
 
-    <?= $form->field($model, 'nav_name') ?>
+    <?= $form->field($model, 'show_name') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

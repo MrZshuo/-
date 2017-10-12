@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
         
-        <h2 style="text-align: center;line-height: 2em;"><?=$model->content_title;?></h2>
+        <h2 style="text-align: center;line-height: 2em;"><?=$model->show_title;?></h2>
         <div style="text-align: right;">Time: <?=$model->contentName->update_at?></div>
         <div><span style="font-size: 1.2em;line-height: 2em;">文章简介：</span><?=$model->content_info?>
         </div>

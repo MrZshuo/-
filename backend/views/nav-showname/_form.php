@@ -18,7 +18,7 @@ use common\models\mysql\Language;
 
     <?= $form->field($model, 'language_id')->label('语言')->dropDownList(Language::getLanguageMap()) ?>
 
-    <?= $form->field($model, 'nav_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'show_name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '增加') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

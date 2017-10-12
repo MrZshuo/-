@@ -46,9 +46,16 @@ class BannerController extends ActiveController
 	*/
 	public function getBanner()
 	{
-		$data = Banner::find()->select(['id','url'])->asArray()->all();
-		foreach ($data as $key => &$value) {
-			$value['url'] = Yii::$app->params['domain'].$value['url'];
+		if(Yii::$app->cache->exists(self::BANNER) && Yii::$app->params['cache'] === true)
+			$data = Yii::$app->cache->get(self::BANNER);
+		else
+		{
+			$data = Banner::find()->select(['url'])->asArray()->all();
+			foreach ($data as $key => &$value) 
+			{
+				$value['url'] = Yii::$app->params['domain'].$value['url'];
+			}
+			Yii::$app->cache->set(self::BANNER,$data);
 		}
 		return $data;
 	}

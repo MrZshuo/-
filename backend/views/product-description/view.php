@@ -6,13 +6,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\ProductDescription */
 
-$this->title = $model->productName->name;
+$this->title = '产品详情:'.$model->productName->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', '产品详情'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->productName->name;
 ?>
 <div class="product-description-view">
-
-
     <p>
         <?= Html::a(Yii::t('app', '修改'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', '删除'), ['delete', 'id' => $model->id], [
@@ -23,32 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+</div>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            [
-                'attribute' => 'id',
-                'captionOptions' =>[
-                    'width' => 100,
-                ],
-            ],
-            'product_id',
-            'language_id',
-            'key_words',
-            [
-                'label' => '产品简介',
-                'value' => function($model){
-                    return strip_tags(htmlspecialchars_decode($model->short_info));
-                }
-            ],
-            [
-                'label' => '产品介绍',
-                'value' => function($model){
-                    return strip_tags($model->content);
-                }
-            ],
-        ],
-    ]) ?>
-
+<div>
+    <?=$model->content?>
 </div>

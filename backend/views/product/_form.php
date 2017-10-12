@@ -16,7 +16,7 @@ use common\models\mysql\Category;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?=$form->field($model,'category_id')->label('产品类别')->dropDownList(
-    	Category::getCategoryMap()
+    	Category::getCategoryMap(),['prompt'=>'请选择产品类别']
     )?>
 
 <?php 

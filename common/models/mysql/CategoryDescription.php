@@ -52,6 +52,6 @@ class CategoryDescription extends \yii\db\ActiveRecord
     //获取语言名
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name')->where(['status'=>1]);
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('language_name');
     }
 }

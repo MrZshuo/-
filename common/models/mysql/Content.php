@@ -33,10 +33,10 @@ class Content extends \yii\db\ActiveRecord
     {
         return [
             [['nav_id','content_title'], 'required'],
-            [['nav_id', 'status'], 'integer'],
+            [['nav_id','status','visitor'], 'integer'],
             [['create_at', 'update_at'], 'safe'],
             [['content_url', 'content_title', 'author'], 'string', 'max' => 255],
-            [['type'], 'string', 'max' => 10],
+            [['type'], 'string', 'max' => 20],
         ];
     }
 
@@ -84,7 +84,7 @@ class Content extends \yii\db\ActiveRecord
     //获取语言名
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name');
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('language_name');
     }
 
     public static function getContentMap($nav_id)

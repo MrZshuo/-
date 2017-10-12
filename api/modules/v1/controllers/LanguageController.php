@@ -31,13 +31,13 @@ class LanguageController extends ActiveController
 
 	public function actionIndex()
 	{
-		if(empty(Yii::$app->cache->exits(self::LANGUAGE)))
+		if(Yii::$app->cache->exists(self::LANGUAGE))
 		{
 			$data = json_decode(Yii::$app->cache->get(self::LANGUAGE));
 		}
 		else
 		{
-			$data = Language::find()->select(['id','name','short'])->where(['status'=>1])->asArray()->all();
+			$data = Language::find()->select(['id','language_name','language_short_name'])->where(['status'=>1])->asArray()->all();
 			Yii::$app->cache->set(self::LANGUAGE,json_encode($data),60*60*2);
 		}
 		return [
@@ -48,11 +48,4 @@ class LanguageController extends ActiveController
 
 	}
 
-
-	public function getBanner()
-	{
-		$data = Banner::find()->select(['id','url','sort','info'])->asArray()->all();
-
-		return $data;
-	}
 }

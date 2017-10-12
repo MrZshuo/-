@@ -19,7 +19,7 @@ class ContentDescriptionSearch extends ContentDescription
     {
         return [
             [['content_id', 'language_id', 'status'], 'integer'],
-            [['content_title', 'content_info', 'content'], 'safe'],
+            [['show_title', 'content_info', 'content'], 'safe'],
         ];
     }
 
@@ -64,7 +64,7 @@ class ContentDescriptionSearch extends ContentDescription
             'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'content_title', $this->content_title])
+        $query->andFilterWhere(['like', 'show_title', $this->show_title])
             ->andFilterWhere(['like', 'content_info', $this->content_info])
             ->andFilterWhere(['like', 'content', $this->content]);
 

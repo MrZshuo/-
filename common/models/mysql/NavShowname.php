@@ -29,7 +29,7 @@ class NavShowname extends \yii\db\ActiveRecord
         return [
             [['nav_id', 'language_id'], 'required'],
             [['nav_id', 'language_id'], 'integer'],
-            [['nav_name'], 'string', 'max' => 50],
+            [['show_name'], 'string', 'max' => 50],
         ];
     }
 
@@ -41,7 +41,7 @@ class NavShowname extends \yii\db\ActiveRecord
         return [
             'nav_id' => Yii::t('app', '导航id'),
             'language_id' => Yii::t('app', '语言id'),
-            'nav_name' => Yii::t('app', '导航显示名'),
+            'show_name' => Yii::t('app', '导航显示名'),
         ];
     }
     //获取导航名
@@ -52,6 +52,6 @@ class NavShowname extends \yii\db\ActiveRecord
     //获取语言名
     public function getLanguageName()
     {
-        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('name')->where(['status'=>1]);
+        return $this->hasOne(Language::className(),['id'=>'language_id'])->select('language_name')->where(['>=','status',0]);
     }
 }

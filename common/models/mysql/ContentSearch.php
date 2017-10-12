@@ -18,7 +18,7 @@ class ContentSearch extends Content
     public function rules()
     {
         return [
-            [['id', 'nav_id', 'status'], 'integer'],
+            [['id','nav_id','status'], 'integer'],
             [['content_url', 'type', 'create_at', 'update_at', 'author'], 'safe'],
         ];
     }

@@ -70,7 +70,7 @@ return [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['v1/nav','v1/language','v1/banner'],
+                    'controller' => ['v1/nav','v1/language','v1/banner','v1/category'],
                     //不开启复数形式
                     'pluralize' => false,
                 ],
@@ -79,6 +79,37 @@ return [
                     'controller' => ['v1/product'],
                     //不开启复数形式
                     'pluralize' => false,
+                    'extraPatterns' => [
+                        //修改产品浏览次数
+                        'POST visitor' => 'visitor', 
+                        //热门产品 显示8条
+                        'GET hot-product' => 'hot-product',
+                        'GET new-product' => 'new-product',
+                        'GET view' => 'view',
+                        'GET list' => 'list',
+                        'GET search' => 'search',
+                        'GET category-list' => 'category-list',
+
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/news'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET list' => 'list',
+                        'GET view' => 'view',
+                        'POST visitor' => 'visitor',
+                        'GET hot-content' => 'hot-content',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/contact'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST add' => 'add',
+                    ],
                 ],
             ],
         ],

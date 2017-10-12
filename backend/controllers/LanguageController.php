@@ -55,7 +55,7 @@ class LanguageController extends MyController
 	public function actionDelete($id)
 	{
 		$model = $this->findModel($id);
-		if(Yii::$app->usr->identity->role == '超级管理员')
+		if(Yii::$app->user->identity->role == '超级管理员')
 			$model->delete();
 		else
 		{

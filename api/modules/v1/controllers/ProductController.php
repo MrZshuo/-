@@ -8,14 +8,21 @@ use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
 
 use common\models\mysql\Product;
-use common\models\mysql\Banner;
+use common\models\mysql\ProductDescription;
+use common\models\mysql\ProductProperty;
+use common\models\mysql\Language;
 /**
 * author zhoushuo <z_s106@126.com>
 */
-class ProductController extends Controller
+class ProductController extends ActiveController
 {
+	const NEW_PRODUCT = 'new_product_';
+	const HOT_PRODUCT = 'hot_product_';
+	const LIST_PRODUCT = 'list_product_';
+	const COUNT_PRODUCT = 'count_product';
+	const CATEGORY_LIST_PRODUCT = 'category_list_product_';
 	
-	// public $modelClass = 'common\models\mysql\Nav';
+	public $modelClass = 'common\models\mysql\Product';
 
 /*	public $serializer = [
 		'class' => 'yii\rest\Serializer',
@@ -31,48 +38,231 @@ class ProductController extends Controller
 
 	public function actionIndex()
 	{
-		return [
-			'code'=> 200,
-			'info' => $this->getInfo($language = 'en'),
-			// 'banner' => $this->getBanner(),
-		];
+		// return $this->actionList();
 
 	}
 	/**
 	*@param $language 语言ID
 	*@return array 产品list 
 	*/
-	public function getInfo($language)
+	public function actionList($lang = 'en',$page = 1,$pagesize = 12)
 	{
-		$data = Product::find()->select(['p.id','p.image_url','d.display_name'])->from('product p')->leftJoin('product_description d','p.id=d.product_id')->where(['d.language_id'=>1,'p.status'=>1])->asArray()->all();
-		foreach ($data as $key => &$value) {
-			$value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
+		//查询是否存在缓存
+		if(Yii::$app->cache->exists(LIST_PRODUCT.$page.'_'.$lang) && Yii::$app->params['cache'] === true)
+			return Yii::$app->cache->get(LIST_PRODUCT.$page.'_'.$lang);	 
+		else
+		{
+			$lang_id = Language::getIdByShortName($lang);
+			$from = ($page-1)*$pagesize;
+			$count = Product::find()->select(['id'])->where(['status'=>1])->count();
+			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('create_at DESC')->offset($from)->limit($pagesize)->asArray()->all();
+			if(empty($data))
+				$info = [
+					'msg' => 'error',
+					'lang' => $lang,
+					'message' => '不存在该语言对应的产品信息',
+				];
+			else
+			{
+				foreach ($data as &$value) {
+					if($pos = strpos($value['image_url'], ','))
+						$value['image_url'] = Yii::$app->params['domain'].substr($value['image_url'], 0,$pos);
+				}
+				$info = [
+					'msg' => 'ok',
+					'lang' => $lang,
+					'page' => $page,
+					'pagesize' => $pagesize,
+					'totalpage' => ceil($count/$pagesize),
+					'list' => $data,
+				];
+			}
+			
+			if(Yii::$app->params['cache'] === true)
+				Yii::$app->cache->set(LIST_PRODUCT.$page.'_'.$lang,$info);
+			return $info;
 		}
-		return $data;
 	}
-
-	public function actionCategory()
+	//产品详细信息
+	public function actionView($id,$lang = 'en')
 	{
-		$data = Product::find()->select(['p.id','p.image_url','d.display_name'])->from('product p')->leftJoin('product_description d','p.id=d.product_id')->where(['d.language_id'=>1,'p.category'=>1,'p.status'=>1])->asArray()->all();
-	}
-
-	public function actionView($id)
-	{
-		$data = Product::find()->select(['p.image_url','d.display_name','d.key_words','d.content'])->from('product p')->leftJoin('product_description d','p.id=d.product_id')->where(['d.language_id'=>1,'p.status'=>1,'p.id'=>$id])->asArray()->one();
-		$data[0]['image_url'] = Yii::$app->params['domain'].$value['image_url'];
-
+		$lang_id = Language::getIdByShortName($lang); 
+		$data = ProductDescription::find()->select(['p.image_url','d.display_name','d.key_words','d.content'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->one();
+		$property = ProductProperty::find()->select(['d.property_name','d.property_value'])->from('product_property d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->all();
 		if(!empty($data))
+		{
+			if($pos = strpos($data['image_url'], ','))
+			{
+				$data['image_url'] = explode(',', $data['image_url']);
+			}
+			foreach ($data['image_url'] as &$value) 
+			{
+				$value = Yii::$app->params['domain'].$value;
+			}
+		}
+		return [
+			'msg' => 'ok',
+			'lang' => $lang,
+			'property' => $property,
+			'info' => $data,
+		];
+			
+
+	}
+	//热门产品  查询8条
+	public function actionHotProduct($lang = 'en',$count = 8)
+	{
+
+		if(Yii::$app->cache->exists(HOT_PRODUCT.$lang))
+			return Yii::$app->cache->get(HOT_PRODUCT.$lang);
+		else
+		{
+			$lang_id = Language::getIdByShortName($lang);
+
+			$data = ProductDescription::find()->select('p.id,p.name,d.display_name,p.image_url')->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('visitor desc')->limit($count)->asArray()->all();
+			if(empty($data))
+				$info = [
+					'msg' => 'error',
+					'lang' => $lang,
+					'message' => '不存在该语言对应的产品信息',
+				];	
+			else
+			{
+				foreach ($data as &$value) {
+					if($pos = strpos($value['image_url'], ','))
+						$value['image_url'] = substr($value['image_url'], 0,$pos);
+					$value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
+				}
+				$info = [
+					'msg' => 'ok',
+					'lang' => $lang,
+					'data' => $data,
+				];
+				if(Yii::$app->params['cache'] === true)
+					Yii::$app->cache->set(HOT_PRODUCT.$lang,$info);	
+			}
+			//缓存数据
+			return $info;
+		}
+	}
+
+	//新产品 查询8条
+	public function actionNewProduct($lang = 'en',$count = 8)
+	{
+		if(Yii::$app->cache->exists(NEW_PRODUCT.$lang))
+			return Yii::$app->cache->get(NEW_PRODUCT.$lang);
+		else
+		{
+			$lang_id = Language::getIdByShortName($lang);
+
+			$data = ProductDescription::find()->select('p.id,p.name,d.display_name,p.image_url,p.create_at')->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('create_at desc')->limit($count)->asArray()->all();
+			if(empty($data))
+				$info = [
+					'msg' => 'error',
+					'lang' => $lang,
+					'message' => '不存在该语言对应的产品信息',
+				];
+			else
+			{
+				foreach ($data as &$value) {
+					if($pos = strpos($value['image_url'], ','))
+						$value['image_url'] = substr($value['image_url'], 0,$pos);
+					$value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
+				}
+				$info = [
+					'msg' => 'ok',
+					'lang' => $lang,
+					'data' => $data,
+				];
+			//缓存数据
+				if(Yii::$app->params['cache'] === true)
+					Yii::$app->cache->set(NEW_PRODUCT.$lang,$info);
+			}
+			return $info;
+		}
+	}
+
+	//统计产品访问次数
+	public function actionVisitor()
+	{
+		$id = Yii::$app->request->post('product_id');
+		if($model = Product::findOne($id))
+		{
+			$model->visitor += 1;
+			$model->save();
 			return [
-				'msg'=>'ok',
-				'data'=>$data,
+				'msg' => 'ok',
+				'count' => $model->visitor,
+			];
+		}
+		else
+			return [
+				'msg' => 'error',
+				'message' => '产品不存在',
+			]; 
+	}
+	//产品分类列表
+	public function actionCategoryList($lang = 'en',$category_id,$page = 1,$pagesize = 12)
+	{
+		//查询是否存在缓存
+		if(Yii::$app->cache->exists(CATEGORY_LIST_PRODUCT.$category_id.'_'.$lang) && Yii::$app->params['cache'] === true)
+			return Yii::$app->cache->get(CATEGORY_LIST_PRODUCT.$category_id.'_'.$lang);	 
+		else
+		{
+			$lang_id = Language::getIdByShortName($lang);
+			$from = ($page-1)*$pagesize;
+			$count = Product::find()->select(['id'])->where(['status'=>1,'category_id'=>$category_id])->count();
+			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['p.category_id'=>$category_id,'d.language_id'=>$lang_id,'p.status'=>1])->orderBy('p.create_at DESC')->offset($from)->limit($pagesize)->asArray()->all();
+			if(empty($data))
+				$info = [
+					'msg' => 'error',
+					'lang' => $lang,
+					'message' => '不存在该语言对应的产品信息',
+				];
+			else
+			{
+				foreach ($data as &$value) {
+					if($pos = strpos($value['image_url'], ','))
+						$value['image_url'] = Yii::$app->params['domain'].substr($value['image_url'], 0,$pos);
+				}
+				$info = [
+					'msg' => 'ok',
+					'lang' => $lang,
+					'page' => $page,
+					'pagesize' => $pagesize,
+					'totalpage' => ceil($count/$pagesize),
+					'list' => $data,
+				];
+				if(Yii::$app->params['cache'] === true)
+					Yii::$app->cache->set(CATEGORY_LIST_PRODUCT.$category_id.'_'.$lang,$info);
+			}
+			
+			return $info;
+		}
+	}
+
+	public function actionSearch($lang = 'en',$keywords,$page = 1,$pagesize = 12)
+	{
+		$lang_id = Language::getIdByShortName($lang);
+		$from = ($page-1)*$pagesize;
+		$count = ProductDescription::find()->select(['id'])->where(['like','display_name',$keywords])->count();
+		$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->andWhere(['like','d.display_name',$keywords])->orderBy('p.create_at DESC')->offset($from)->limit($pagesize)->asArray()->all();
+		if(empty($data))
+			return [
+				'msg' => 'error',
+				'code' => 500,
+				'message' => '未找到相应的信息',
 			];
 		else
 			return [
-				'msg'=>'error',
-				'message'=>'产品不存在',
+				'msg' => 'ok',
+				'code' => 200,
+				'page' => $page,
+				'pagesize' => $pagesize,
+				'totalcount' => $count,
+				'list' => $data 
 			];
 
 	}
-
 
 }

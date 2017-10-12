@@ -70,4 +70,8 @@ class Nav extends \yii\db\ActiveRecord
     {
         return self::find()->select(['name','id'])->where(['status'=>1,'pid'=>0])->orderBy('sort ASC')->indexBy('id')->column();
     }
+    public static function getNavNameMap()
+    {
+       return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('sort ASC')->indexBy('name')->column();
+    }
 }
