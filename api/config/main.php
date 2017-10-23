@@ -97,10 +97,14 @@ return [
                     'controller' => ['v1/news'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'GET list' => 'list',
                         'GET view' => 'view',
                         'POST visitor' => 'visitor',
-                        'GET hot-content' => 'hot-content',
+                        'GET hot-news' => 'hot-news',
+                        'GET hot-video' => 'hot-video',
+                        'GET group' => 'group',
+                        'GET home-news' => 'home-news',
+                        'GET video-list' => 'video-list',
+                        'GET news-list' => 'news-list',
                     ],
                 ],
                 [
@@ -108,7 +112,23 @@ return [
                     'controller' => ['v1/contact'],
                     'pluralize' => false,
                     'extraPatterns' => [
-                        'POST add' => 'add',
+                        'POST create' => 'create',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/question'],
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/about'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET company-profile' => 'company-profile',
+                        'GET video-show' => 'video-show',
+                        'GET company-show' => 'company-show',
+                        'GET market' => 'market'
                     ],
                 ],
             ],

@@ -115,13 +115,11 @@ class ProductDescriptionController extends MyController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $langlist = Language::find()->select(['name','id'])->where(['status'=>1])->indexBy('id')->column();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'langlist' => $langlist,
             ]);
         }
     }

@@ -3,32 +3,17 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
-use yii\web\Controller;
-use yii\rest\ActiveController;
-use yii\data\ActiveDataProvider;
 
 use common\models\mysql\Nav;
 use common\models\mysql\Language;
 /**
 * author zhoushuo <z_s106@126.com>
 */
-class NavController extends Controller
+class NavController extends ApiController
 {
 	const NAV = 'nav_name_';
 	
 	public $modelClass = 'common\models\mysql\Nav';
-
-/*	public $serializer = [
-		'class' => 'yii\rest\Serializer',
-		// 'collectionEnvelope' => 'items',
-	],*/
-	//注销系统自带的实现方法
-	public function actions()
-	{
-		$actions = parent::actions();
-		unset($actions['index'],$actions['update'],$actions['create'],$actions['delete'],$actions['view']);
-		return $actions;
-	}
 
 	public function actionIndex($lang='en')
 	{

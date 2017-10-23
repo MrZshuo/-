@@ -10,7 +10,7 @@ use Yii;
  * @property integer $id
  * @property integer $pid
  * @property string $name
- * @property integer $pid
+ * @property integer $status
  * @property integer $sort
  */
 class Category extends \yii\db\ActiveRecord
@@ -30,7 +30,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             ['name', 'required'],
-            [['sort','pid'], 'integer'],
+            [['sort','pid','status'], 'integer'],
             ['name', 'string', 'max' => 50],
         ];
     }

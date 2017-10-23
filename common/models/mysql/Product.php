@@ -32,7 +32,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['name','category_id'], 'required'],
-            ['image_url','safe'],
+            [['image_url','color'],'safe'],
             [['create_at', 'update_at','admin_name'], 'string'],
             ['name', 'string', 'max' => 255],
         ];
@@ -46,7 +46,8 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', '产品名'),
-            'image_url' => Yii::t('app', '产品主图'),
+            'image_url' => Yii::t('app', '产品图片'),
+            'color' => Yii::t('app', '产品颜色'),
             'create_at' => Yii::t('app', '创建时间'),
             'update_at' => Yii::t('app', '更新时间'),
             'admin_name' => Yii::t('app', '编辑人'),
@@ -66,8 +67,8 @@ class Product extends \yii\db\ActiveRecord
     {
         if(parent::beforeSave($insert))
         {
-            if(is_array($this->image_url) && $this->image_url)
-                $this->image_url = implode(',', $this->image_url);
+            $this->image_url = $this->implodeUrl($this->image_url);
+            $this->color = $this->implodeUrl($this->color);
             if($insert)
             { 
                 $this->create_at = $this->update_at = date("Y-m-d H:i:s");
@@ -75,14 +76,19 @@ class Product extends \yii\db\ActiveRecord
             }
             else
                 $this->update_at = date("Y-m-d H:i:s");
-
             if(!Yii::$app->user->isGuest)
                 $this->admin_name = Yii::$app->user->identity->username;
-
             return true;
         }
         else
             return false;
+    }
+    private function implodeUrl($arr)
+    {
+        if(is_array($arr) && !empty($arr))
+        {
+            return implode(',',$arr);
+        }
     }
     //获取产品名与id
     public static function getProductNameMap()

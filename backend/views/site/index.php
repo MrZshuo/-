@@ -47,10 +47,11 @@ $this->title = '流量统计';
                     }
                 ],
                 [
+                    'attribute' => 'content',
                     'label' => '标题',
                     'value' => function($model)
                     {
-                        return mb_strlen($model->theme,'utf-8') > 20 ? mb_substr($model->theme, 0, 20,'utf-8').'...' : $model->theme;
+                        return mb_strlen($model->content,'utf-8') > 30 ? mb_substr($model->content, 0, 30,'utf-8').'...' : $model->content;
                     }
                 ],
                 'telephone',

@@ -32,11 +32,10 @@ class ProductDescription extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'language_id'], 'required'],
+            [['product_id', 'language_id','display_name'], 'required'],
             [['product_id', 'language_id'], 'integer'],
-            [['content'], 'string'],
-            [['display_name'], 'string','max' => 50],
-            [['short_info', 'key_words'], 'string', 'max' => 255],
+            [['short_info','content'], 'string'],
+            [['display_name','key_words'], 'string','max' => 255],
         ];
     }
 

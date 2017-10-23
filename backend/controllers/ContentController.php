@@ -66,6 +66,7 @@ class ContentController extends MyController
         $model = new Content();
         $model->type = 'image';
         $model->status = 1;
+        $model->sort = 99;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('create');
         } else {

@@ -21,7 +21,7 @@ use common\models\mysql\Content;
 
     <?= $form->field($model, 'show_title')->label('显示名称')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content_info')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'content_info')->label('简介（**每一行以#结束**）')->textarea(['rows' => 8])?>
 
     <?= $form->field($model,'content')->widget('kucha\ueditor\UEditor',[
          // 'lang' =>'zh-cn', //英文为 en
@@ -33,7 +33,8 @@ use common\models\mysql\Content;
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '添加详情') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '添加详情') : Yii::t('app', '修改'),
+            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app','返回'),Url::to('index'),['class' => 'btn btn-primary'])?>
     </div>
 

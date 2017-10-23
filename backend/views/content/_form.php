@@ -14,15 +14,19 @@ use common\models\mysql\Nav;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nav_id')->dropDownList(Nav::getNavMap(),['prompt'=>'--请选择分类--']) ?>
+    <?= $form->field($model, 'nav_id')->dropDownList(Nav::getContentNavMap(),['prompt'=>'--请选择分类--']) ?>
 
     <?= $form->field($model, 'content_title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'type')->label('选择要上传的文件类型')->radioList(['image' => '图片','video' => '视频']) ?>
 
-    <?=$form->field($model,'content_url')->label('文件上传(视频/图片)')->widget('manks\FileInput',[])?>
+    <?= $form->field($model,'content_url')->label('文件上传(视频/图片)')->widget('manks\FileInput',[])?>
+
+    <?= $form->field($model,'video_show')->label('视频封面(图片)')->widget('manks\FileInput',[])?>
 
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'sort')->input('number')?>
 
 
     <div class="form-group">

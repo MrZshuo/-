@@ -4,7 +4,6 @@ namespace backend\controllers;
 use Yii;
 
 use yii\data\ActiveDataProvider;
-use backend\controllers\MyController;
 use common\models\mysql\Language;
 
 /**

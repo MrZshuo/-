@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'create_at',
             'update_at',
             'admin_name',
-            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{update} {delete}   {product-description} {product-property}',
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{update} {delete}   {product-description} ',
                 'buttons' => [
                     'product-description' => function($url,$model,$key)
                     {
@@ -63,14 +63,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         ];
                         return Html::a('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>',Url::to(['/product-description/create','id'=>$model->id]),$options);
                     },
-                    'product-property' => function($url,$model,$key)
+/*                    'product-property' => function($url,$model,$key)
                     {
                         $options = [
                             'title' => Yii::t('app','添加属性'),
                             'aria-label' => Yii::t('app','添加属性'),
                         ];
                         return Html::a('<i class="fa fa-cubes" aria-hidden="true"></i>',Url::to(['/product-property/create','id'=>$model->id]),$options);
-                    }
+                    }*/
                 ],
             ],
         ],

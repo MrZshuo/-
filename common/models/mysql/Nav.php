@@ -63,7 +63,7 @@ class Nav extends \yii\db\ActiveRecord
     //获取所有导航
     public static function getNavMap()
     {
-       return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('sort ASC')->indexBy('id')->column();
+       return self::find()->select(['name','id'])->where(['>','status',0])->orderBy('sort ASC')->indexBy('id')->column();
     }
     //获取一级导航
     public static function getFirstNav()
@@ -73,5 +73,10 @@ class Nav extends \yii\db\ActiveRecord
     public static function getNavNameMap()
     {
        return self::find()->select(['name','id'])->where(['status'=>1])->orderBy('sort ASC')->indexBy('name')->column();
+    }
+    //获取新闻、视频、公司介绍
+    public static function getContentNavMap()
+    {
+        return self::find()->select(['name','id'])->where(['status'=>2])->orderBy('sort ASC')->indexBy('id')->column();
     }
 }

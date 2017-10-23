@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', '添加详情');
 
     <?= $this->render('_form', [
         'model' => $model,
-        'langlist' => $langlist,
     ]) ?>
 
 </div>

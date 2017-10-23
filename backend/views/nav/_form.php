@@ -14,7 +14,7 @@ use common\models\mysql\Nav;
 
     <?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'pid')->dropDownList() ?>    
+    <?= $form->field($model, 'pid')->dropDownList(Nav::getNavMap()) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

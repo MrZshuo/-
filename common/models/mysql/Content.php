@@ -33,10 +33,11 @@ class Content extends \yii\db\ActiveRecord
     {
         return [
             [['nav_id','content_title'], 'required'],
-            [['nav_id','status','visitor'], 'integer'],
+            [['nav_id','status','visitor','sort'], 'integer'],
             [['create_at', 'update_at'], 'safe'],
-            [['content_url', 'content_title', 'author'], 'string', 'max' => 255],
+            [['content_url', 'content_title', 'author','video_show'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
+            ['sort','default','value' => 99],
         ];
     }
 
@@ -55,6 +56,8 @@ class Content extends \yii\db\ActiveRecord
             'update_at' => Yii::t('app', '修改时间'),
             'author' => Yii::t('app', '作者'),
             'status' => Yii::t('app', '状态'),
+            'sort' => Yii::t('app', '排序'),
+            'video_show' => Yii::t('app', '视频封面'),
         ];
     }
 
@@ -65,7 +68,7 @@ class Content extends \yii\db\ActiveRecord
             if($insert)
             { 
                 $this->create_at = $this->update_at = date("Y-m-d H:i:s");
-                // $this->image_url = Yii::$app->params['domain'].$this->image_url;
+//                 $this->image_url = Yii::$app->params['domain'].$this->image_url;
             }
             else
                 $this->update_at = date("Y-m-d H:i:s");

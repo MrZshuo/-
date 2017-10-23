@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="content-description-view" style="width: 750px">
 
     <p>
-        <?= Html::a(Yii::t('app', '修改'), ['update', 'id' => $model->content_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', '删除'), ['delete', 'id' => $model->content_id], [
+        <?= Html::a(Yii::t('app', '修改'), ['update','id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', '删除'), ['delete','id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
