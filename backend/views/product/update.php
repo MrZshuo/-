@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('app', '修改 {modelClass}: ', [
     'modelClass' => 'Product',
 ]) . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Products'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', '产品'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', '修改');
 ?>

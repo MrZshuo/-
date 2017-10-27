@@ -192,13 +192,9 @@ class NewsController extends ApiController
     //获取首页新闻列表 company news 28 /Exhibition News 29
     public function actionHomeNews($lang = 'en')
     {
-        if(Yii::$app->cache->exists(self::CONTENT_HOME_NEWS.$lang))
+        if(Yii::$app->cache->exists(self::CONTENT_HOME_NEWS.$lang) && Yii::$app->params['cache'] === true)
         {
-            $data = Yii::$app->cache->get(self::CONTENT_HOME_NEWS.$lang);
-            return [
-                'msg' => 'cache',
-                'data' => $data,
-            ];
+            return  Yii::$app->cache->get(self::CONTENT_HOME_NEWS.$lang);
         }
         else
         {
@@ -215,7 +211,7 @@ class NewsController extends ApiController
                     'newsList' => $exh_news['list'],
                 ],
             ];
-            if(Yii::$app->params['cache'])
+            if(Yii::$app->params['cache'] === true)
                 Yii::$app->cache->set(self::CONTENT_HOME_NEWS.$lang, $info);
             return $info;
         }

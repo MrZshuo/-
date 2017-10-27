@@ -67,8 +67,10 @@ class Product extends \yii\db\ActiveRecord
     {
         if(parent::beforeSave($insert))
         {
-            $this->image_url = $this->implodeUrl($this->image_url);
-            $this->color = $this->implodeUrl($this->color);
+            if(is_array($this->image_url))
+                 $this->image_url = $this->implodeUrl($this->image_url);
+            if(is_array($this->color))
+                 $this->color = $this->implodeUrl($this->color);
             if($insert)
             { 
                 $this->create_at = $this->update_at = date("Y-m-d H:i:s");

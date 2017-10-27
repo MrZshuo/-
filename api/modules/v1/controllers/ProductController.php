@@ -45,8 +45,10 @@ class ProductController extends ApiController
 			else
 			{
 				foreach ($data as &$value) {
-					if($pos = strpos($value['image_url'], ','))
+					if(($pos = strpos($value['image_url'], ',')) > 1)
 						$value['image_url'] = Yii::$app->params['domain'].substr($value['image_url'], 0,$pos);
+					else if(!empty($value['image_url']))
+					    $value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
 				}
 				$info = [
 					'msg' => 'ok',
@@ -92,10 +94,15 @@ class ProductController extends ApiController
 	// 将string类型多组图片地址 转化为数组
 	private function explodeUrl(&$s_url)
     {
-        if($pos = strpos($s_url,','))
+        if(($pos = strpos($s_url,',')) > 1)
             $s_url = explode(',',$s_url);
-        foreach ($s_url as &$value)
-            $value = Yii::$app->params['domain'].$value;
+        if(is_array($s_url))
+        {
+            foreach ($s_url as &$value)
+                $value = Yii::$app->params['domain'].$value;
+        }
+        else
+            $s_url = Yii::$app->params['domain'].$s_url;
         return $s_url;
     }
 	//热门产品  查询8条
@@ -184,7 +191,7 @@ class ProductController extends ApiController
 		if($model = Product::findOne($id))
 		{
 			$model->visitor += 1;
-			$model->save();
+			// $model->save(false);
 			return [
 				'msg' => 'ok',
 				'count' => $model->visitor,

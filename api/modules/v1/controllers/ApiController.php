@@ -21,7 +21,7 @@ class ApiController extends ActiveController
             [
                 'class' => Cors::className(),
                 'cors' => [
-                    'Origin' => ['http://localhost:9002','http://192.168.1.135:9002'],
+                    'Origin' => ['http://localhost:9002','http://test.sinovinyl.com','http://192.168.2.63:8081'],
                     'Access-Control-Request-Method' => ['GET', 'POST'],
                     'Access-Control-Allow-Credentials' => true,
                 ],
