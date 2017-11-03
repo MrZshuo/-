@@ -16,7 +16,7 @@ return [
     		'accept' => [
     			'title' => 'file',
     			'extensions' => 'gif,jpg,jpeg,bmp,png,3gp,mp4,rmvb,mov,avi,m4v',
-    			'mimeTypes' => 'image/*,video/*',
+    			'mimeTypes' => 'image/gif,image/jpg,image/jpeg,image/bmp,image/png,video/mp4,video/3gp,video/rmvb,video/avi,video/m4v',
     		],
     		'pick' => [
     			'multiple' => false,

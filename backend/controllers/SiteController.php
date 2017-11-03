@@ -8,7 +8,7 @@ use yii\filters\AccessControl;
 use backend\models\LoginForm;
 use common\models\mysql\VisitorCount;
 use common\models\mysql\Customer;
-
+use yii\web\NotFoundHttpException;
 /**
  * Site controller
  */
@@ -28,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','view'],
+                        'actions' => ['logout', 'index','view','delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -38,6 +38,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'delete' => ['post']
                 ],
             ],
         ];
@@ -96,7 +97,13 @@ class SiteController extends Controller
             throw new NotFoundHttpException("页面不存在.");
             
     }
-
+    // 删除客户询盘讯息
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+        $model->delete();
+        return $this->redirect('index');
+    }
     /**
      * Login action.
      *

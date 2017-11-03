@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'content:ntext',
             // 'status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','header' => '操作'],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

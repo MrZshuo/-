@@ -40,7 +40,7 @@ class ProductController extends MyController
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find()->where(['status'=>1]),
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 6,
             ],
             'sort' => [
                 // 'defaultOrder' => []

@@ -35,6 +35,7 @@ class Product extends \yii\db\ActiveRecord
             [['image_url','color'],'safe'],
             [['create_at', 'update_at','admin_name'], 'string'],
             ['name', 'string', 'max' => 255],
+            ['status','']
         ];
     }
 
@@ -67,10 +68,8 @@ class Product extends \yii\db\ActiveRecord
     {
         if(parent::beforeSave($insert))
         {
-            if(is_array($this->image_url))
-                 $this->image_url = $this->implodeUrl($this->image_url);
-            if(is_array($this->color))
-                 $this->color = $this->implodeUrl($this->color);
+             $this->image_url = $this->implodeUrl($this->image_url);
+             $this->color = $this->implodeUrl($this->color);
             if($insert)
             { 
                 $this->create_at = $this->update_at = date("Y-m-d H:i:s");
@@ -87,10 +86,12 @@ class Product extends \yii\db\ActiveRecord
     }
     private function implodeUrl($arr)
     {
-        if(is_array($arr) && !empty($arr))
+        if(is_array($arr))
         {
             return implode(',',$arr);
         }
+        else
+            return $arr;
     }
     //获取产品名与id
     public static function getProductNameMap()

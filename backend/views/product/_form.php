@@ -24,6 +24,23 @@ use common\models\mysql\Category;
             'pick' => [
                 'multiple' => true,
             ],
+            'compress' => [
+                // 压缩后的尺寸
+                'width' => 500,
+                'height' => 500,
+                // 图片质量，只有type为image/jpeg的时候才有效。
+                'quality' => 90,
+                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false
+                'allowMagnify' => false,
+                // 是否允许裁剪
+                'crop' => true,
+                // 是否保留头部meta信息
+                'preserveHeaders' => true,
+                // 如果发现压缩后文件大小比原来还大，则使用原来图片，此属性可能会影响图片自动纠正功能
+                'noCompressIfLarger' => false,
+                // 单位字节，如果图片大小小于此值，不会采用压缩
+                'compressSize' => 0
+            ]
         ],
     ]); ?>
 
@@ -32,6 +49,23 @@ use common\models\mysql\Category;
             'pick' => [
                 'multiple' => true,
             ],
+            'compress' => [
+                // 压缩后的尺寸
+                'width' => 500,
+                'height' => 500,
+                // 图片质量，只有type为image/jpeg的时候才有效。
+                'quality' => 90,
+                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false
+                'allowMagnify' => false,
+                // 是否允许裁剪
+                'crop' => true,
+                // 是否保留头部meta信息
+                'preserveHeaders' => true,
+                // 如果发现压缩后文件大小比原来还大，则使用原来图片，此属性可能会影响图片自动纠正功能
+                'noCompressIfLarger' => false,
+                // 单位字节，如果图片大小小于此值，不会采用压缩
+                'compressSize' => 0
+            ]
         ],
     ]); ?>
 

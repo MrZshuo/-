@@ -20,7 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn','header' => '序号'],
-
+            [
+               'label' => '产品图',
+               'format' => [
+                   'image',
+                   ['width' => 80,'height' => 80]
+               ],
+                'value' => function($model)
+                {
+                    return $model->productImage;
+                }
+            ],
             [
                 'attribute' => 'product_id',
                 'label' => '产品名',
@@ -41,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'property_name',
             'property_value',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn','header' => '操作'],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

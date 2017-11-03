@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '语言',
                 'value' => function($model)
                 {
-                    return $model->languageName->name;
+                    return $model->languageName->language_name;
                 },
                 'filter' => Language::getLanguageMap(),
             ],

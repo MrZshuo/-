@@ -57,4 +57,13 @@ class ProductProperty extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Language::className(),['id'=>'language_id'])->select(['language_name']);
     }
+    //获取产品主图
+    public function getProductImage()
+    {
+        $model = $this->hasOne(Product::className(),['id'=>'product_id']);
+        $url = $model->image_url;
+        if(($pos = strpos($url,',')) > 1)
+            $url = substr($url,0,$pos);
+        return Yii::$app->params['domain'].$url;
+    }
 }

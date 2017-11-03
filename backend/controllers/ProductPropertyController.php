@@ -5,7 +5,6 @@ namespace backend\controllers;
 use Yii;
 use common\models\mysql\ProductProperty;
 use backend\models\ProductPropertySearch;
-use backend\controllers\MyController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 

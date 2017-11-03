@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template'=>'{update} {delete} {assignment} {reset-password}',
+            ['class' => 'yii\grid\ActionColumn','header'=>'操作','template'=>'{update}  {assignment}  {reset-password}  {delete}',
                 'buttons' =>[
                     'reset-password' => function($url,$model,$key)
                     {
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => Yii::t('app','添加角色'),
                             'aria-label' => Yii::t('app','添加角色'),
                         ];
-                        return Html::a('<i class="fa fa-key" aria-hidden="true"></i>',Url::to(['admin/assignment/view','id'=>$model->id]),$options);
+                        return Html::a('<i class="fa fa-user-circle-o" aria-hidden="true"></i>',Url::to(['admin/assignment/view','id'=>$model->id]),$options);
                     }
                 ],
             ],

@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 $this->title = '询盘详情';
@@ -26,5 +27,9 @@ $this->title = '询盘详情';
 		],
 
 	])?>
+
+    <div>
+        <?=Html::a(Yii::t('app','返回'),Url::to('index'),['class'=>'btn primary'])?>
+    </div>
 
 </div>

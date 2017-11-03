@@ -8,6 +8,7 @@ use common\models\mysql\Product;
 use common\models\mysql\ProductDescription;
 use common\models\mysql\ProductProperty;
 use common\models\mysql\Language;
+use common\models\mysql\Category;
 /**
 * author zhoushuo <z_s106@126.com>
 */
@@ -22,20 +23,24 @@ class ProductController extends ApiController
 	public $modelClass = 'common\models\mysql\Product';
 
 	/**
-	*@param $language 语言ID
+	*@param $lang 语言
 	*@return array 产品list 
 	*/
-	public function actionList($lang = 'en',$page = 1,$pagesize = 12)
+	public function actionList($lang = 'en',$page = 1,$pageSize = 12)
 	{
+	    if(empty($lang))
+	        $lang = 'en';
 		//查询是否存在缓存
 		if(Yii::$app->cache->exists(self::LIST_PRODUCT.$page.'_'.$lang) && Yii::$app->params['cache'] === true)
 			return Yii::$app->cache->get(self::LIST_PRODUCT.$page.'_'.$lang);
 		else
 		{
 			$lang_id = Language::getIdByShortName($lang);
-			$from = ($page-1)*$pagesize;
-			$count = Product::find()->select(['id'])->where(['status'=>1])->count();
-			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('create_at DESC')->offset($from)->limit($pagesize)->asArray()->all();
+			$from = ($page-1)*$pageSize;
+			$count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
+			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')
+                ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])
+                ->orderBy('create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
 			if(empty($data))
 				$info = [
 					'msg' => 'error',
@@ -45,10 +50,7 @@ class ProductController extends ApiController
 			else
 			{
 				foreach ($data as &$value) {
-					if(($pos = strpos($value['image_url'], ',')) > 1)
-						$value['image_url'] = Yii::$app->params['domain'].substr($value['image_url'], 0,$pos);
-					else if(!empty($value['image_url']))
-					    $value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
+                    $value['image_url'] = $this->getFirstImage($value['image_url']);
 				}
 				$info = [
 					'msg' => 'ok',
@@ -67,9 +69,14 @@ class ProductController extends ApiController
 	//产品详细信息
 	public function actionView($id,$lang = 'en')
 	{
+	    if(empty($lang))
+	        $lang = 'en';
 		$lang_id = Language::getIdByShortName($lang); 
-		$data = ProductDescription::find()->select(['p.image_url','p.color','d.display_name as name','d.short_info','d.content'])->from('product_description d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->one();
-		//$property = ProductProperty::find()->select(['d.property_name','d.property_value'])->from('product_property d')->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->all();
+		$data = ProductDescription::find()->select(['p.image_url','p.color','d.display_name as name','d.short_info','d.content'])
+            ->from('product_description d')->leftJoin('product p','p.id=d.product_id')
+            ->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->one();
+		$property = ProductProperty::find()->select(['d.property_name','d.property_value'])->from('product_property d')
+            ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1,'p.id'=>$id])->asArray()->all();
 		if(!empty($data))
 		{
 			if(!empty($data['image_url']))
@@ -89,32 +96,47 @@ class ProductController extends ApiController
 			'msg' => 'ok',
 			'lang' => $lang,
 			'info' => $data,
+            'property' => $property,
 		];
 	}
 	// 将string类型多组图片地址 转化为数组
-	private function explodeUrl(&$s_url)
+    private function explodeUrl($s_url)
     {
+         $arr = [];
         if(($pos = strpos($s_url,',')) > 1)
-            $s_url = explode(',',$s_url);
-        if(is_array($s_url))
         {
-            foreach ($s_url as &$value)
+            $arr = explode(',',$s_url);
+            foreach ($arr as &$value)
                 $value = Yii::$app->params['domain'].$value;
         }
         else
-            $s_url = Yii::$app->params['domain'].$s_url;
-        return $s_url;
+            $arr[0] = Yii::$app->params['domain'].$s_url;
+        return $arr;
+     }
+     // 获取产品第一张图
+    private function getFirstImage($str)
+    {
+        if(($pos = strpos($str,',')) > 1)
+        {
+            return Yii::$app->params['domain'].substr($str,0,$pos);
+        }
+        else
+        {
+            return Yii::$app->params['domain'].$str;
+        }
     }
-	//热门产品  查询8条
+	// 热门产品  查询8条
 	public function actionHotProduct($lang = 'en',$page = 1, $pageSize = 8)
 	{
-
+	    if(empty($lang))
+	        $lang = 'en';
 		if(Yii::$app->cache->exists(self::HOT_PRODUCT.$lang))
 			return Yii::$app->cache->get(self::HOT_PRODUCT.$lang);
 		else
 		{
 			$lang_id = Language::getIdByShortName($lang);
             $from = ($page-1)*$pageSize;
+            $count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
 			$data = ProductDescription::find()->select('p.id,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('visitor desc')
                 ->offset($from)->limit($pageSize)->asArray()->all();
@@ -125,16 +147,15 @@ class ProductController extends ApiController
 					'message' => '不存在该语言对应的产品信息',
 				];	
 			else
-			{
-				foreach ($data as &$value) {
-					if($pos = strpos($value['image_url'], ','))
-						$value['image_url'] = substr($value['image_url'], 0,$pos);
-					$value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
-				}
+            {
+                foreach ($data as &$value)
+                {
+                    $value['image_url'] = $this->getFirstImage($value['image_url']);
+                }
 				$info = [
 					'msg' => 'ok',
 					'lang' => $lang,
-                    'totalCount' => $pageSize,
+                    'totalCount' => $count,
 					'list' => $data,
 				];
 				if(Yii::$app->params['cache'] === true)
@@ -148,12 +169,15 @@ class ProductController extends ApiController
 	//新产品 查询8条
 	public function actionNewProduct($lang = 'en',$page = 1,$pageSize = 8)
 	{
+	    if(empty($lang))
+	        $lang = 'en';
 		if(Yii::$app->cache->exists(self::NEW_PRODUCT.$lang))
 			return Yii::$app->cache->get(self::NEW_PRODUCT.$lang);
 		else
 		{
 			$lang_id = Language::getIdByShortName($lang);
             $from = ($page-1) * $pageSize;
+            $count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
 			$data = ProductDescription::find()->select('p.id,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('create_at desc')
                 ->offset($from)->limit($pageSize)->asArray()->all();
@@ -165,15 +189,12 @@ class ProductController extends ApiController
 				];
 			else
 			{
-				foreach ($data as &$value) {
-					if($pos = strpos($value['image_url'], ','))
-						$value['image_url'] = substr($value['image_url'], 0,$pos);
-					$value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
-				}
+                foreach ($data as &$value)
+                    $value['image_url'] = $this->getFirstImage($value['image_url']);
 				$info = [
 					'msg' => 'ok',
 					'lang' => $lang,
-                    'totalCount' => $pageSize,
+                    'totalCount' => $count,
 					'list' => $data,
 				];
 			//缓存数据
@@ -191,7 +212,7 @@ class ProductController extends ApiController
 		if($model = Product::findOne($id))
 		{
 			$model->visitor += 1;
-			// $model->save(false);
+			$model->save(false);
 			return [
 				'msg' => 'ok',
 				'count' => $model->visitor,
@@ -206,12 +227,14 @@ class ProductController extends ApiController
 	//产品分类列表
 	public function actionCategoryList($lang = 'en',$category_id,$page = 1,$pageSize = 12)
 	{
+	    if(empty($lang))
+	        $lang = 'en';
 		//查询是否存在缓存
-        if($category_id == 5)
+        if($category_id == 6)
         {
             return $this->actionNewProduct($lang,$page,$pageSize);
         }
-        if($category_id == 6)
+        if($category_id == 5)
         {
             return $this->actionHotProduct($lang,$page,$pageSize);
         }
@@ -220,11 +243,16 @@ class ProductController extends ApiController
 		else
 		{
 			$lang_id = Language::getIdByShortName($lang);
+			$pid = Category::find()->select(['id'])->where(['pid' => $category_id])->asArray()->column();
+			if(!empty($pid))
+			    $category_id = $pid;
 			$from = ($page-1)*$pageSize;
-			$count = Product::find()->select(['id'])->where(['status'=>1,'category_id'=>$category_id])->count();
+			$count = $data = ProductDescription::find()->select(['p.id'])->from('product_description d')
+                ->leftJoin('product p','p.id=d.product_id')->where(['p.category_id'=>$category_id,'d.language_id'=>$lang_id,'p.status'=>1])->count();
 			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['p.category_id'=>$category_id,'d.language_id'=>$lang_id,'p.status'=>1])
                 ->orderBy('p.create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
+
 			if(empty($data))
 				$info = [
 					'msg' => 'error',
@@ -233,10 +261,8 @@ class ProductController extends ApiController
 				];
 			else
 			{
-				foreach ($data as &$value) {
-					if($pos = strpos($value['image_url'], ','))
-						$value['image_url'] = Yii::$app->params['domain'].substr($value['image_url'], 0,$pos);
-				}
+                foreach ($data as &$value)
+                    $value['image_url'] = $this->getFirstImage($value['image_url']);
 				$info = [
 					'msg' => 'ok',
 					'lang' => $lang,
@@ -248,17 +274,18 @@ class ProductController extends ApiController
 				if(Yii::$app->params['cache'] === true)
 					Yii::$app->cache->set(self::CATEGORY_LIST_PRODUCT.$category_id.'_'.$lang,$info);
 			}
-			
 			return $info;
 		}
 	}
-
+    // 产品搜索
 	public function actionSearch($lang = 'en',$keywords,$page = 1,$pageSize = 12)
 	{
+	    if(empty($lang))
+	        $lang = 'en';
 		$lang_id = Language::getIdByShortName($lang);
 		$from = ($page-1)*$pageSize;
 		$count = ProductDescription::find()->select(['id'])->where(['like','display_name',$keywords])->count();
-		$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')
+		$data = ProductDescription::find()->select(['p.id','p.image_url','d.display_name'])->from('product_description d')
             ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->
             andWhere(['like','d.display_name',$keywords])->orderBy('p.create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
 		if(empty($data))
@@ -269,14 +296,9 @@ class ProductController extends ApiController
 			];
 		else
         {
-            if(is_array($data))
+            foreach ($data as &$value)
             {
-                foreach ($data as &$value)
-                {
-                    if($pos = strpos($value['image_url'], ','))
-                        $value['image_url'] = substr($value['image_url'], 0,$pos);
-                    $value['image_url'] = Yii::$app->params['domain'].$value['image_url'];
-                }
+                $value['image_url'] = $this->getFirstImage($value['image_url']);
             }
             return [
                 'msg' => 'ok',

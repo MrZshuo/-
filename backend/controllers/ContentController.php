@@ -123,4 +123,5 @@ class ContentController extends MyController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

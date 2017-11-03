@@ -50,11 +50,6 @@ class ProductDescriptionSearch extends ProductDescription
             'pagination' => [
                 'pageSize' => 15,
             ],
-            'sort' => [
-                'defaultOrder' => [
-
-                ],
-            ],
         ]);
 
         $this->load($params);

@@ -14,11 +14,11 @@ use common\models\mysql\Nav;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nav_id')->dropDownList(Nav::getContentNavMap(),['prompt'=>'--请选择分类--']) ?>
+    <?= $form->field($model, 'content_title')->label('视频名')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content_title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model,'content_url')->label('视频上传')->widget('manks\FileInput',[])?>
 
-    <?= $form->field($model,'content_url')->label('图片上传')->widget('manks\FileInput',[])?>
+    <?= $form->field($model,'video_show')->label('视频封面(图片)')->widget('manks\FileInput',[])?>
 
     <?= $form->field($model, 'author')->textInput(['maxlength' => true]) ?>
 

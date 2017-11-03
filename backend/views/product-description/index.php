@@ -53,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'short_info',
             // 'key_words',
-
             ['class' => 'yii\grid\ActionColumn','header'=>'操作','template' => '{view}{update}{delete}'],
         ],
     ]); ?>

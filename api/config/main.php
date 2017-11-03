@@ -23,14 +23,14 @@ return [
         'response' => [
             'format'=>'json',
         ],
-        'redis' => [
+/*        'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => 'localhost',
             'port' => 6379,
             'database' => 0,
-        ],
+        ],*/
         'cache' => [
-            'class' => 'yii\redis\Cache',
+           'class' => 'yii\caching\ApcCache',
             'keyPrefix' => 'sinoapi',
         ],
         'request' => [
@@ -113,6 +113,8 @@ return [
                     'pluralize' => false,
                     'extraPatterns' => [
                         'POST create' => 'create',
+                        'GET input-info' => 'input-info',
+                        'POST user-rss' => 'user-rss'
                     ],
                 ],
                 [

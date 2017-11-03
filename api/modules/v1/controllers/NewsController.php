@@ -21,18 +21,19 @@ class NewsController extends ApiController
 
 	public $modelClass = 'common\models\mysql\Content';
 	//获取news/video/about us 内容列表
-	private function getList($lang = 'en',$nav_id,$page = 1,$pagesize = 12)
+	private function getList($lang = 'en',$nav_id,$page = 1,$pageSize = 12)
 	{
-		if(Yii::$app->cache->exists(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pagesize))
-			return Yii::$app->cache->get(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pagesize);
+		if(Yii::$app->cache->exists(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pageSize))
+			return Yii::$app->cache->get(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pageSize);
 		else
 		{
 			$lang_id = Language::getIdByShortName($lang);
 			$pid = Nav::find()->select(['id'])->where(['pid'=>$nav_id])->asArray()->column();
 			if(!empty($pid))
 				$nav_id = $pid;
-			$from = ($page-1)*$pagesize;
-			$totalCount = ContentDescription::find()->select(['c.id'])->from('content_description d')->leftJoin('content c','c.id=d.content_id')->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->count();
+			$from = ($page-1)*$pageSize;
+			$totalCount = ContentDescription::find()->select(['c.id'])->from('content_description d')->leftJoin('content c','c.id=d.content_id')
+                ->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->count();
 			if($totalCount < 1)
 				$info = [
 					'msg' => 'error',
@@ -40,10 +41,12 @@ class NewsController extends ApiController
 					'lang' => $lang,
 					'message' => '未找到当前语言对应的信息',
 				];
-
 			else
 			{
-				$data = ContentDescription::find()->select(['c.id','c.content_url as url','c.video_show','d.show_title as title','d.content_info','c.create_at as date'])->from('content_description d')->leftJoin('content c','c.id=d.content_id')->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->orderBy('c.create_at DESC')->offset($from)->limit($pagesize)->asArray()->all();
+				$data = ContentDescription::find()->select(['c.id','c.content_url as url','c.video_show','d.show_title as title','d.content_info','c.create_at as date'])
+                    ->from('content_description d')->leftJoin('content c','c.id=d.content_id')
+                    ->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->orderBy('c.create_at DESC')
+                    ->offset($from)->limit($pageSize)->asArray()->all();
                 foreach ($data as &$value)
                 {
                     $value['url'] = Yii::$app->params['domain'].$value['url'];
@@ -55,13 +58,13 @@ class NewsController extends ApiController
 					'code' => 200,
 					'lang' => $lang,
 					'page' => $page,
-					'pageSize' => $pagesize,
+					'pageSize' => $pageSize,
 					'totalCount' => $totalCount,
 					'list' => $data,
 				];
 			}
 			if(Yii::$app->params['cache'] === true)
-				Yii::$app->cache->set(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pagesize,$info);
+				Yii::$app->cache->set(self::CONTENT_LIST.$lang.'_'.$nav_id.'_'.$page.'_'.$pageSize,$info,Yii::$app->params['expire']);
 			return $info;	
 		}
 	}
@@ -134,7 +137,10 @@ class NewsController extends ApiController
             if(!empty($pid))
                 $nav_id = $pid;
 
-            $data = ContentDescription::find()->select(['c.id','c.content_url as url','c.create_at as date','c.video_show','d.show_title as title','d.content_info'])->from('content_description d')->leftJoin('content c','c.id=d.content_id')->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->orderBy('c.visitor DESC')->limit($num)->asArray()->all();
+            $data = ContentDescription::find()->select(['c.id','c.content_url as url','c.create_at as date','c.video_show','d.show_title as title','d.content_info'])
+                ->from('content_description d')->leftJoin('content c','c.id=d.content_id')
+                ->where(['c.nav_id'=>$nav_id,'c.status'=>1,'d.language_id'=>$lang_id])->orderBy('c.visitor DESC')
+                ->limit($num)->asArray()->all();
             if(empty($data))
                 $info = [
                     'msg' => 'error',
@@ -157,7 +163,7 @@ class NewsController extends ApiController
                 ];
             }
             if(Yii::$app->params['cache'] === true)
-                Yii::$app->cache->set(self::CONTENT_HOT.$lang.'_'.$nav_id.'_'.$num ,$info);
+                Yii::$app->cache->set(self::CONTENT_HOT.$lang.'_'.$nav_id.'_'.$num ,$info,Yii::$app->params['expire']);
             return $info;
         }
 	}
@@ -169,7 +175,9 @@ class NewsController extends ApiController
         else
         {
             $lang_id = Language::getIdByShortName($lang);
-            $data = ContentDescription::find()->select(['c.id','c.content_url','d.show_title as title','d.content_info'])->from('content_description d')->leftJoin('content c','c.id=d.content_id')->where(['c.nav_id' => $nav_id,'d.language_id' => $lang_id])->orderBy('c.sort ASC')->limit($num)->asArray()->all();
+            $data = ContentDescription::find()->select(['c.id','c.content_url','d.show_title as title','d.content_info'])
+                ->from('content_description d')->leftJoin('content c','c.id=d.content_id')
+                ->where(['c.nav_id' => $nav_id,'d.language_id' => $lang_id])->orderBy('c.sort ASC')->limit($num)->asArray()->all();
             if(!empty($data))
             {
                 foreach ($data as &$value)
@@ -184,7 +192,7 @@ class NewsController extends ApiController
                 'data' => $data
             ];
             if(Yii::$app->params['cache'] === true)
-                Yii::$app->cache->set(self::CONTENT_GROUP.$lang,$info);
+                Yii::$app->cache->set(self::CONTENT_GROUP.$lang,$info,Yii::$app->params['expire']);
             return $info;
         }
     }
@@ -212,7 +220,7 @@ class NewsController extends ApiController
                 ],
             ];
             if(Yii::$app->params['cache'] === true)
-                Yii::$app->cache->set(self::CONTENT_HOME_NEWS.$lang, $info);
+                Yii::$app->cache->set(self::CONTENT_HOME_NEWS.$lang, $info,Yii::$app->params['expire']);
             return $info;
         }
     }
@@ -221,7 +229,6 @@ class NewsController extends ApiController
     {
         return $this->getList($lang,9,$page,$pageSize);
     }
-
     // 获取新闻列表
     public function actionNewsList($lang = 'en',$page = 1, $pageSize = 12)
     {

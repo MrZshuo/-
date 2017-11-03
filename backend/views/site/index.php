@@ -69,7 +69,7 @@ $this->title = '流量统计';
                     //     'class' => ['bg-green'],
                     // ],
                 ],
-                ['class' => 'yii\grid\ActionColumn','header'=> '操作','template'=>'{view}'],
+                ['class' => 'yii\grid\ActionColumn','header'=> '操作','template'=>'{view}{delete}'],
             ],
         ])?>
 <?php Pjax::end(); ?>
