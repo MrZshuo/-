@@ -35,7 +35,7 @@ class Product extends \yii\db\ActiveRecord
             [['image_url','color'],'safe'],
             [['create_at', 'update_at','admin_name'], 'string'],
             ['name', 'string', 'max' => 255],
-            ['status','']
+            ['status','default','value'=>1]
         ];
     }
 
@@ -59,10 +59,10 @@ class Product extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return ProductQuery the active query used by this AR class.
      */
-    public static function find()
+/*    public static function find()
     {
         return new ProductQuery(get_called_class());
-    }
+    }*/
 
     public function beforeSave($insert)
     {

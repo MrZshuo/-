@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use yii\data\ActiveDataProvider;
 use common\models\mysql\Product;
+use common\models\mysql\Content;
 use common\models\mysql\ProductImages;
 use backend\models\Upload;
 use yii\web\NotFoundHttpException;
@@ -74,14 +75,10 @@ class ProductController extends MyController
     public function actionCreate()
     {
         $model = new Product();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('create');
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+            return $this->redirect('index');
+        else
+            return $this->render('create',['model' => $model]);
     }
 
     /**
@@ -111,7 +108,7 @@ class ProductController extends MyController
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id,'Product');
+        $model = $this->findModel($id);
         if(Yii::$app->user->identity->role == '超级管理员' || Yii::$app->user->identity->username == $model->admin_name)
         {
             $model->delete();

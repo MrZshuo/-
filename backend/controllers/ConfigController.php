@@ -43,9 +43,9 @@ class ConfigController extends MyController
     }
     public function actionIndex()
     {
-        $model = New ActiveDataProvider([
+        $dataProvider = New ActiveDataProvider([
             'query' => Config::find(),
         ]);
-        $this->render('index',['dataProvider' => $model]);
+        return $this->render('index',['dataProvider' => $dataProvider]);
     }
 }

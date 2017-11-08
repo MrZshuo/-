@@ -7,6 +7,7 @@ use common\models\mysql\Category;
 /* @var $this yii\web\View */
 /* @var $model common\models\mysql\Product */
 /* @var $form yii\widgets\ActiveForm */
+
 ?>
 
 <div class="product-form">
@@ -24,7 +25,7 @@ use common\models\mysql\Category;
             'pick' => [
                 'multiple' => true,
             ],
-            'compress' => [
+/*            'compress' => [
                 // 压缩后的尺寸
                 'width' => 500,
                 'height' => 500,
@@ -40,7 +41,7 @@ use common\models\mysql\Category;
                 'noCompressIfLarger' => false,
                 // 单位字节，如果图片大小小于此值，不会采用压缩
                 'compressSize' => 0
-            ]
+            ]*/
         ],
     ]); ?>
 
@@ -49,7 +50,7 @@ use common\models\mysql\Category;
             'pick' => [
                 'multiple' => true,
             ],
-            'compress' => [
+/*            'compress' => [
                 // 压缩后的尺寸
                 'width' => 500,
                 'height' => 500,
@@ -65,7 +66,7 @@ use common\models\mysql\Category;
                 'noCompressIfLarger' => false,
                 // 单位字节，如果图片大小小于此值，不会采用压缩
                 'compressSize' => 0
-            ]
+            ]*/
         ],
     ]); ?>
 

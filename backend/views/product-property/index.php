@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'property_name',
             'property_value',
 
-            ['class' => 'yii\grid\ActionColumn','header' => '操作'],
+            ['class' => 'yii\grid\ActionColumn','header' => '操作','template' => '{update} {delete}'],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

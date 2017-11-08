@@ -38,7 +38,7 @@ class ProductController extends ApiController
 			$lang_id = Language::getIdByShortName($lang);
 			$from = ($page-1)*$pageSize;
 			$count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
-			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')
+			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name as searchName','d.display_name'])->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])
                 ->orderBy('create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
 			if(empty($data))
@@ -137,7 +137,7 @@ class ProductController extends ApiController
 			$lang_id = Language::getIdByShortName($lang);
             $from = ($page-1)*$pageSize;
             $count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
-			$data = ProductDescription::find()->select('p.id,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
+			$data = ProductDescription::find()->select('p.id,p.name as searchName,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('visitor desc')
                 ->offset($from)->limit($pageSize)->asArray()->all();
 			if(empty($data))
@@ -178,7 +178,7 @@ class ProductController extends ApiController
 			$lang_id = Language::getIdByShortName($lang);
             $from = ($page-1) * $pageSize;
             $count = ProductDescription::find()->select(['id'])->where(['language_id' => $lang_id])->count();
-			$data = ProductDescription::find()->select('p.id,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
+			$data = ProductDescription::find()->select('p.id,p.name as searchName,d.display_name as name,p.image_url,p.create_at')->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->orderBy('create_at desc')
                 ->offset($from)->limit($pageSize)->asArray()->all();
 			if(empty($data))
@@ -249,7 +249,7 @@ class ProductController extends ApiController
 			$from = ($page-1)*$pageSize;
 			$count = $data = ProductDescription::find()->select(['p.id'])->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['p.category_id'=>$category_id,'d.language_id'=>$lang_id,'p.status'=>1])->count();
-			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name','d.display_name'])->from('product_description d')
+			$data = ProductDescription::find()->select(['p.id','p.image_url','p.name as searchName','d.display_name as name'])->from('product_description d')
                 ->leftJoin('product p','p.id=d.product_id')->where(['p.category_id'=>$category_id,'d.language_id'=>$lang_id,'p.status'=>1])
                 ->orderBy('p.create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
 
@@ -285,7 +285,7 @@ class ProductController extends ApiController
 		$lang_id = Language::getIdByShortName($lang);
 		$from = ($page-1)*$pageSize;
 		$count = ProductDescription::find()->select(['id'])->where(['like','display_name',$keywords])->count();
-		$data = ProductDescription::find()->select(['p.id','p.image_url','d.display_name'])->from('product_description d')
+		$data = ProductDescription::find()->select(['p.id','p.image_url','p.name as searchName','d.display_name'])->from('product_description d')
             ->leftJoin('product p','p.id=d.product_id')->where(['d.language_id'=>$lang_id,'p.status'=>1])->
             andWhere(['like','d.display_name',$keywords])->orderBy('p.create_at DESC')->offset($from)->limit($pageSize)->asArray()->all();
 		if(empty($data))

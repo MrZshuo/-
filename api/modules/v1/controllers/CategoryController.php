@@ -38,7 +38,7 @@ class CategoryController extends ApiController
 			if(!empty($lang) && $lang !== 'en')
 			{
 				$language_id = Language::getIdByShortName($lang);
-				$data = CategoryDescription::find()->select(['c.id','d.show_name as name','c.pid'])->from('category_description d')
+				$data = CategoryDescription::find()->select(['c.id','d.show_name as name','c.pid','c.name as searchName'])->from('category_description d')
                     ->leftJoin('category c','c.id=d.category_id')->where(['and','d.language_id'=>$language_id,'c.status'=>1])
                     ->orderBy('sort ASC')->asArray()->all();
 				if(empty($data))
@@ -49,7 +49,7 @@ class CategoryController extends ApiController
 					];
 			}
 			else
-				$data = Category::find()->select(['id','name','pid'])->where(['status'=>1])->orderBy('sort ASC')->asArray()->all();
+				$data = Category::find()->select(['id','name','pid','name as searchName'])->where(['status'=>1])->orderBy('sort ASC')->asArray()->all();
 			foreach ($data as $key => &$value) 
 			{
 				if($value['pid'] !== 0)

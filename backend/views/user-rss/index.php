@@ -23,4 +23,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn','header' => '操作','template' => '{delete}']
         ]
     ])?>
+    <?php Pjax::end()?>
 </div>
